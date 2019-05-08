@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Dashboard extends HttpServlet {
     
-    private Receiver receiver;
-    private final RealtimeData realtimeData = new RealtimeData();
+    //private Receiver receiver;
+    //private final RealtimeData realtimeData = new RealtimeData();
     
     @Override
     public void init() throws ServletException
     {
-        receiver = new Receiver(55555, realtimeData);
-        receiver.run();
+        //receiver = new Receiver(55555, realtimeData);
+        //receiver.run();
     }
     
     @Override
@@ -29,7 +29,7 @@ public class Dashboard extends HttpServlet {
         
         output.println("<HTML><HEAD></HEAD><BODY>Hello world!<br>");
         output.print("Value: ");
-        output.println(realtimeData.getValue());
+        //output.println(realtimeData.getValue());
         output.println("</BODY></HTML>");
     }
 }
