@@ -8,7 +8,7 @@ public class ServerDAO implements DAOInterface
 {
     public ServerDAO() throws ClassNotFoundException
     {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         
         try{
             connectToDatabase();
