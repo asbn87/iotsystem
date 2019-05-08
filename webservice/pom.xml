@@ -8,7 +8,6 @@
     <packaging>war</packaging>
 
     <name>webservice</name>
-    <kommentar>hej</kommentar>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
