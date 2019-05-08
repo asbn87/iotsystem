@@ -2,7 +2,7 @@ package dashboard;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import com.mysql.jdbc.Connection;
+//import com.mysql.jdbc.Connection;
 //import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Driver;
@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
 public class DAOInterface {
     public static void main(String[] args) throws ClassNotFoundException{
         Class.forName("com.mysql.jdbc.Driver");
@@ -27,7 +27,7 @@ public class DAOInterface {
         
     }
     
-    
+    /*
     public static void connectToDatabase() throws SQLException{
         String username = ""; // database name mostly "root"
         String password = ""; // database password
@@ -45,6 +45,8 @@ public class DAOInterface {
         }
         
     }
-    
-    
 }
+*/
+    
+    
+
