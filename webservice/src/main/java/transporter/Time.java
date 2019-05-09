@@ -1,11 +1,11 @@
 package transporter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Time 
 {
     int id;
-    Date time;
+    LocalDateTime time;
 
     public int getId() 
     {
@@ -17,12 +17,12 @@ public class Time
         this.id = id;
     }
 
-    public Date getTime() 
+    public LocalDateTime getTime() 
     {
         return time;
     }
 
-    public void setTime(Date time) 
+    public void setTime(LocalDateTime time) 
     {
         this.time = time;
     }
