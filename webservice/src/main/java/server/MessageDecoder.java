@@ -1,4 +1,4 @@
-package websocket;
+package server;
 
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;

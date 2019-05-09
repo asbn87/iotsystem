@@ -1,27 +1,45 @@
-package websocket;
+package server;
 
 public class Message
 {
-    private float value;
-    private String unit;
+    private Float temperature;
+    private Float humidity;
+    private Float raditation;
+    private Integer light;
 
-    public float getValue()
+    public float getTemperature()
     {
-        return value;
+        return temperature;
     }
 
-    public void setValue(float value)
+    public void setTemperature(Float temperature)
     {
-        this.value = value;
+        this.temperature = temperature;
     }
 
-    public String getUnit()
+    public Float getHumidity()
     {
-        return unit;
+        return humidity;
     }
 
-    public void setUnit(String unit)
+    public void setHumidity(Float humidity)
     {
-        this.unit = unit;
+        this.humidity = humidity;
+    }
+
+    public Float getRaditation() {
+        return raditation;
+    }
+
+    public void setRaditation(Float raditation) {
+        this.raditation = raditation;
+    }
+
+    public Integer getLight() {
+        return light;
+    }
+
+    public void setLight(Integer light) {
+        this.light = light;
     }
 }
