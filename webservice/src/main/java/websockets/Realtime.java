@@ -5,7 +5,7 @@ public class Realtime
     private Integer deviceId;
     private Float temperature;
     private Float humidity;
-    private Float raditation;
+    private Float radiation;
     private Integer light;
 
     public int getDeviceId()
@@ -39,11 +39,11 @@ public class Realtime
     }
 
     public Float getRaditation() {
-        return raditation;
+        return radiation;
     }
 
-    public void setRaditation(Float raditation) {
-        this.raditation = raditation;
+    public void setRaditation(Float radiation) {
+        this.radiation = radiation;
     }
 
     public Integer getLight() {
