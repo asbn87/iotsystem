@@ -44,12 +44,8 @@ void loop()
       websocketClient.sendData(json);
     }
     
-    Serial.print("Counts per minute: ");
-    Serial.print(countsPerMinute);
-    Serial.print("  (");
-    Serial.print(radiation);
-    Serial.println(" uSv/h)");
-
+    Serial.printf("Radiation: %.2f uSv/h\n", radiation);
+	
     counts = 0;
   }
 }
