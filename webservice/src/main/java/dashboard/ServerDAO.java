@@ -27,7 +27,7 @@ public class ServerDAO implements DAOInterface
     {
         try {
             Properties p = new Properties();
-            p.load(new FileInputStream("C:\\Git projekt\\SystemIntegrationUppg1Server\\src\\java\\Server\\settings.properties"));
+            p.load(new FileInputStream(""));
             
             Class.forName("com.mysql.cj.jdbc.Driver");
             
