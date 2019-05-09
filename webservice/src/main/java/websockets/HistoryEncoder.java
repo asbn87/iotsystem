@@ -5,13 +5,13 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 import com.google.gson.Gson;
 
-public class MessageEncoder implements Encoder.Text<Message>
+public class HistoryEncoder implements Encoder.Text<History>
 {
     @Override
-    public String encode(Message message) throws EncodeException
+    public String encode(History history) throws EncodeException
     {
         Gson gson = new Gson();
-        String json = gson.toJson(message);
+        String json = gson.toJson(history);
         return json;
     }
 
@@ -25,5 +25,5 @@ public class MessageEncoder implements Encoder.Text<Message>
     public void destroy() 
     {
         // Close resources
-    }
+    }    
 }

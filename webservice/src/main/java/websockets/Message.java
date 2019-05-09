@@ -1,12 +1,23 @@
-package server;
+package websockets;
 
 public class Message
 {
+    private Integer deviceId;
     private Float temperature;
     private Float humidity;
     private Float raditation;
     private Integer light;
 
+    public int getDeviceId()
+    {
+        return deviceId;
+    }
+    
+    public void setDeviceId(int deviceId)
+    {
+        this.deviceId = deviceId;
+    }
+    
     public float getTemperature()
     {
         return temperature;

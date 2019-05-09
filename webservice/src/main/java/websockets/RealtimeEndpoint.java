@@ -1,4 +1,4 @@
-package server;
+package websockets;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,27 +12,29 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/device/{deviceId}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
-public class Endpoint
+@ServerEndpoint(value = "/websocket/realtime/{deviceId}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
+public class RealtimeEndpoint
 {
-    private static final List<Endpoint> deviceEndpoints = new CopyOnWriteArrayList<>();
-    private static final List<Endpoint> dashboardEndpoints = new CopyOnWriteArrayList<>();
+    private static final List<RealtimeEndpoint> deviceEndpoints = new CopyOnWriteArrayList<>();
+    private static final List<RealtimeEndpoint> dashboardEndpoints = new CopyOnWriteArrayList<>();
     private Session session;
+    private String deviceId;
     
     @OnOpen
     public void onOpen(Session session, @PathParam("deviceId") String deviceId)
     {
        this.session = session;
+       this.deviceId = deviceId;
        
-       if (deviceId.equals("0"))
+       if (deviceId.equals("dashboard"))
        {
            dashboardEndpoints.add(this);
-           System.out.println("Dashboard connected.");
+           System.out.println("Dashboard connected to realtime websocket.");
        }
        else
        {
            deviceEndpoints.add(this);
-           System.out.println("Device " + deviceId + " connected.");
+           System.out.println("Device " + deviceId + " connected to realtime websocket.");
        }
     }
 
@@ -48,7 +50,8 @@ public class Endpoint
             dashboardEndpoints.remove(this);
         }
         
-        System.out.println("Disconnect.");
+        System.out.println("Device " + deviceId 
+                + " disconnected from realtime websocket.");
     }
 
     @OnError
@@ -66,6 +69,7 @@ public class Endpoint
         try
         {
             broadcast(message);
+            System.out.println("Broadcasted message.");
         }
         catch (IOException e)
         {
@@ -79,7 +83,7 @@ public class Endpoint
     
     private static void broadcast(Message message) throws IOException, EncodeException
     {
-        for (Endpoint endpoint : dashboardEndpoints)
+        for (RealtimeEndpoint endpoint : dashboardEndpoints)
         {
             endpoint.session.getBasicRemote().sendObject(message);
         }

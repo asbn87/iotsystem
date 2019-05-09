@@ -5,14 +5,14 @@ import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import com.google.gson.Gson;
 
-public class MessageDecoder implements Decoder.Text<Message> 
+public class HistoryDecoder implements Decoder.Text<History> 
 {
     @Override
-    public Message decode(String s) throws DecodeException
+    public History decode(String s) throws DecodeException
     {
         Gson gson = new Gson();
-        Message message = gson.fromJson(s, Message.class);
-        return message;
+        History history = gson.fromJson(s, History.class);
+        return history;
     }
 
     @Override
@@ -31,5 +31,5 @@ public class MessageDecoder implements Decoder.Text<Message>
     public void destroy()
     {
         // Close resources
-    }
+    }    
 }
