@@ -1,6 +1,6 @@
 package websockets;
 
-public class Message
+public class Realtime
 {
     private Integer deviceId;
     private Float temperature;

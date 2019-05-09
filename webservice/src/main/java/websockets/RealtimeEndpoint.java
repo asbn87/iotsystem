@@ -2,6 +2,8 @@ package websockets;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
@@ -12,11 +14,12 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/websocket/realtime/{deviceId}", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
+@ServerEndpoint(value = "/websocket/realtime/{deviceId}", decoders = RealtimeDecoder.class, encoders = RealtimeEncoder.class)
 public class RealtimeEndpoint
 {
     private static final List<RealtimeEndpoint> deviceEndpoints = new CopyOnWriteArrayList<>();
     private static final List<RealtimeEndpoint> dashboardEndpoints = new CopyOnWriteArrayList<>();
+    private static final Map<Integer, Realtime> realtimeMeasurements = new ConcurrentHashMap<>();
     private Session session;
     private String deviceId;
     
@@ -26,16 +29,21 @@ public class RealtimeEndpoint
        this.session = session;
        this.deviceId = deviceId;
        
-       if (deviceId.equals("dashboard"))
-       {
-           dashboardEndpoints.add(this);
-           System.out.println("Dashboard connected to realtime websocket.");
-       }
-       else
-       {
-           deviceEndpoints.add(this);
-           System.out.println("Device " + deviceId + " connected to realtime websocket.");
-       }
+        switch (deviceId) {
+            case "dashboard":
+                dashboardEndpoints.add(this);
+                System.out.println("Dashboard connected to realtime websocket.");
+                break;
+                
+            case "log":
+                dbSave();
+                break;
+                
+            default:
+                deviceEndpoints.add(this);
+                System.out.println("Device " + deviceId + " connected to realtime websocket.");
+                break;
+        }
     }
 
     @OnClose
@@ -58,34 +66,49 @@ public class RealtimeEndpoint
     public void onError(Throwable error)
     {
         error.printStackTrace();
-        System.out.println("We got an error!");
-        System.out.println(error.getMessage());
     }
 
     @OnMessage
-    public void onMessage(Session session, Message message)
+    public void onMessage(Session session, Realtime message)
     {
-        System.out.println("We got an message!");
+        realtimeMeasurements.put(Integer.parseInt(deviceId), message);
+        
         try
         {
             broadcast(message);
             System.out.println("Broadcasted message.");
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (EncodeException e)
+        catch (IOException | EncodeException e)
         {
             e.printStackTrace();
         }
     }
     
-    private static void broadcast(Message message) throws IOException, EncodeException
+    private static void broadcast(Realtime message) throws IOException, EncodeException
     {
         for (RealtimeEndpoint endpoint : dashboardEndpoints)
         {
             endpoint.session.getBasicRemote().sendObject(message);
+        }
+    }
+    
+    private static void dbSave()
+    {
+        System.out.println("All realtime measurements stored in memory: ");
+        
+        for (Map.Entry<Integer, Realtime> entry : realtimeMeasurements.entrySet())
+        {
+            int deviceId = entry.getKey();
+            Float temperature = entry.getValue().getTemperature();
+            Float humidity = entry.getValue().getHumidity();
+            Float radiation = entry.getValue().getRaditation();
+            Integer light = entry.getValue().getLight();
+            
+            System.out.println("\nDevice ID: " + deviceId);
+            System.out.println("Temperature: " + temperature);
+            System.out.println("Humidity: " + humidity);
+            System.out.println("Radiation: " + radiation);
+            System.out.println("Light: " + light);
         }
     }
 }

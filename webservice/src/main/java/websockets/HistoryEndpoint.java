@@ -9,7 +9,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/websocket/historical", decoders = HistoryDecoder.class, encoders = HistoryEncoder.class)
+@ServerEndpoint(value = "/websocket/history", decoders = HistoryDecoder.class, encoders = HistoryEncoder.class)
 public class HistoryEndpoint 
 {
     private static final List<HistoryEndpoint> dashboardEndpoints = new CopyOnWriteArrayList<>();

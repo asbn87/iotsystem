@@ -5,13 +5,13 @@ import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import com.google.gson.Gson;
 
-public class MessageDecoder implements Decoder.Text<Message> 
+public class RealtimeDecoder implements Decoder.Text<Realtime> 
 {
     @Override
-    public Message decode(String s) throws DecodeException
+    public Realtime decode(String s) throws DecodeException
     {
         Gson gson = new Gson();
-        Message message = gson.fromJson(s, Message.class);
+        Realtime message = gson.fromJson(s, Realtime.class);
         return message;
     }
 
