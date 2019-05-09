@@ -16,8 +16,7 @@ function connect()
 function send()
 {
     var msg = {
-        value: "23.2",
-        unit: "°C"
+        temperature: 23.2
       };
 
     ws.send(JSON.stringify(msg));
