@@ -17,6 +17,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
 </web-app>

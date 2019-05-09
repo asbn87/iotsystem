@@ -4,9 +4,7 @@ function connect()
 {   
     var host = document.location.host;
     
-    console.log("Connecting...");
-    ws = new WebSocket("ws://" + host + "/websocketTest/device/1");
-    console.log("Connected!");
+    ws = new WebSocket("ws://" + host + "/webservice/websocket/realtime/1");
 
     ws.onmessage = function(event) {
         console.log(event.data);
