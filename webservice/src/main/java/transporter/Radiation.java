@@ -6,6 +6,11 @@ public class Radiation
     int deviceId;
     int timeId;
     float siverts_uSv;
+    
+    public Radiation(float uSv)
+    {
+        setSiverts_uSv(uSv);
+    }
 
     public int getId() 
     {

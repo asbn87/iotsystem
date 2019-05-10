@@ -5,6 +5,12 @@ public class Device
     int id;
     String mac;
     String description;
+    
+    public Device(String mac, String description)
+    {
+        setMac(mac);
+        setDescription(description);
+    }
 
     public String getMac() 
     {

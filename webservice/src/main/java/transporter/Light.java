@@ -6,6 +6,11 @@ public class Light
     int deviceId;
     int timeId;
     int lux;
+    
+    public Light(int lux)
+    {
+        setLux(lux);
+    }
 
     public int getId() 
     {

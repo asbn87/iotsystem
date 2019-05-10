@@ -6,6 +6,11 @@ public class Temperature
     int deviceId;
     int timeId;
     float temperature_C;
+    
+    public Temperature(float temperature)
+    {
+        setTemperature_C(temperature);
+    }
 
     public int getId() 
     {

@@ -6,6 +6,11 @@ public class Humidity
     private int deviceId;
     private int timeId;
     private float humidity_pct;
+    
+    public Humidity(float humidity)
+    {
+        setHumidity_pct(humidity);
+    }
 
     public int getId() 
     {

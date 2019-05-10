@@ -6,6 +6,11 @@ public class Time
 {
     int id;
     LocalDateTime time;
+    
+    public Time(LocalDateTime time)
+    {
+        setTime(time);
+    }
 
     public int getId() 
     {
