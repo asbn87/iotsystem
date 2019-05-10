@@ -1,3 +1,39 @@
+// Package
+struct Package {
+  uint16_t light = 0;
+  char* description = "light";
+
+  String DateTime()
+  {
+    time_t now;
+    struct tm ts;
+    char buf[80];
+    
+    // Get current time
+    time(&now);
+
+    // Format time
+    ts = *localtime(&now);
+    ts.tm_hour += 2; // Local Summertime Western Europe +2
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
+  
+    return (String)buf;
+  }
+  
+  void updateReadings() {
+    light = LightSensor.GetLightIntensity();
+  }
+};
+struct Package data;
+
+void initSerial(int baud)
+{
+  Serial.begin(baud);
+  delay(2000);
+  Serial.println("--Serial communication initiated--");
+  Serial.println("Baud rate: "+ String(baud));
+}
+
 void initWifi()
 {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -15,7 +51,7 @@ void initWifi()
 
 void websocketConnect(WiFiClient& wifiClient)
 {
-  if (wifiClient.connect(destinationHost, destinationPort))
+  if (wifiClient.connect(webserverHost, webserverPort))
   {
     Serial.println("WebSocket connected.");
   }
@@ -32,7 +68,7 @@ void websocketConnect(WiFiClient& wifiClient)
 void websocketHandshake(WiFiClient& wifiClient, WebSocketClient& websocketClient)
 {
   websocketClient.path = websocketPath;
-  websocketClient.host = destinationHost;
+  websocketClient.host = webserverHost;
   
   if (websocketClient.handshake(wifiClient))
   {
@@ -46,4 +82,16 @@ void websocketHandshake(WiFiClient& wifiClient, WebSocketClient& websocketClient
       // Hang on failure
     }  
   }
+}
+
+void createMessage(char* json) {
+  data.updateReadings();
+  StaticJsonBuffer<MESSAGE_MAX_LEN> jsonBuffer;
+  JsonObject& root = jsonBuffer.createObject();
+  root["dateTime"] = data.DateTime();
+  root["mac"] = DEVICE_ID;
+  root["description"] = data.description;
+  root["light"] = data.light;
+
+  root.printTo(json, MESSAGE_MAX_LEN);
 }

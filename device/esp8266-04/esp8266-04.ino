@@ -1,45 +1,50 @@
 #include <ESP8266WiFi.h>
 #include <WebSocketClient.h>
+#include <ArduinoJson.h>
 #include <Wire.h>
 #include <BH1750FVI.h>
+#include <time.h>
 #include "config.h"
 #include "functions.h"
 
-unsigned long previousMillis = 0;
-
-WebSocketClient websocketClient;
-WiFiClient wifiClient;
-
-BH1750FVI LightSensor(BH1750FVI::k_DevModeContHighRes);
-
 void setup()
 {
-  Serial.begin(115200);
+  initSerial(115200);
+  initWifi();
   Wire.begin(SDA_PIN, SCL_PIN);
   LightSensor.begin();
-
-  initWifi();
+  
   delay(5000);
+
+  connectionString.toCharArray(websocketPath, WEBSOCKET_PATH_LENGTH);
   websocketConnect(wifiClient);
   websocketHandshake(wifiClient, websocketClient);
+
+  // Configuring time sync
+  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  Serial.println("Waiting on time sync...");
+  while (time(nullptr) < 1510644967) 
+  {
+    delay(10);
+  }
 }
 
 void loop()
 {
   unsigned long currentMillis = millis();
+  char json[MESSAGE_MAX_LEN];
   
   if((currentMillis - previousMillis) >= SEND_INTERVAL)
   {
     previousMillis = currentMillis;
 
-    uint16_t light = LightSensor.GetLightIntensity();
-    Serial.printf("Light: %d lux\n", light);
-
     if (wifiClient.connected())
     {
-      char json[40];
-      sprintf(json, "{\"deviceId\":%d,\"light\":%d}", DEVICE_ID, light);
+      createMessage(json);
       websocketClient.sendData(json);
+
+      Serial.println("Message sent: ");
+      Serial.println(json);
     }
   }
 }
