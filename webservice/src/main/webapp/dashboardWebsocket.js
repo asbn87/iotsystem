@@ -7,8 +7,31 @@ function connectRealtime()
     
     wsRealtime.onmessage = function(event)
     {
-        document.getElementById("realtime").innerHTML = event.data;
-        console.log(event.data);
+        var receivedObject = JSON.parse(event.data);
+        var measurementString = receivedObject.description;
+        measurementString += "<br>" + receivedObject.dateTime;
+    
+        if (receivedObject.hasOwnProperty("temperature"))
+        {
+            measurementString += "<br>Temperature: " + receivedObject.temperature + " °C";
+        }
+
+        if (receivedObject.hasOwnProperty("humidity"))
+        {
+            measurementString += "<br>Humidity: " + receivedObject.humidity + " %";
+        }
+
+        if (receivedObject.hasOwnProperty("radiation"))
+        {
+            measurementString += "<br>Radiation: " + receivedObject.radiation + " µSv/h";
+        }
+
+        if (receivedObject.hasOwnProperty("light"))
+        {
+            measurementString += "<br>Light: " + receivedObject.light + " lux";
+        }
+
+        document.getElementById(receivedObject.mac).innerHTML = measurementString;
     };
 }
 

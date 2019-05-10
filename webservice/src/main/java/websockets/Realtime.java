@@ -40,8 +40,6 @@ public class Realtime
         this.dateTime = dateTime;
     }
     
-    
-    
     public float getTemperature()
     {
         return temperature;
