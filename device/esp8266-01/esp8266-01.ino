@@ -2,63 +2,52 @@
 #include <WebSocketClient.h>
 #include <DHT.h>
 #include <ArduinoJson.h>
+#include <time.h>
 #include "config.h"
 #include "functions.h"
 
-WebSocketClient webSocketClient;
-WiFiClient client; // Use WiFiClient class to create TCP connections
+WebSocketClient websocketClient;
+WiFiClient wifiClient; // Use WiFiClient class to create TCP connections
+unsigned long previousMillis = 0;
 
-void setup() {
+void setup() 
+{
   initSerial(115200);
   initWifi();
   dht.begin();
 
   delay(5000);
   
-  // Connect to the websocket server
-  Serial.println("\n--Connecting to websocket--");
-  if (client.connect(host, port)) {
-    Serial.println("Client connected");
-  } else {
-    Serial.println("Connection failed.");
-    while(1) {}
-  }
+  connectionString.toCharArray(websocketPath, WEBSOCKET_PATH_LENGTH);
+  websocketConnect(wifiClient);
+  websocketHandshake(wifiClient, websocketClient);
 
-  // Handshake with the server
-  webSocketClient.path = path;
-  webSocketClient.host = host;
-  
-  if (webSocketClient.handshake(client)) {
-    Serial.println("Handshake successful");
-  } 
-  else {
-    Serial.println("Handshake failed.");
-    while(1) {}
-  }
-
+  // Configuring time sync
   configTime(0, 0, "pool.ntp.org", "time.nist.gov");
   Serial.println("Waiting on time sync...");
-  while (time(nullptr) < 1510644967) {
+  while (time(nullptr) < 1510644967) 
+  {
     delay(10);
   }
 }
 
-unsigned long lastMillis = 0;
-void loop() {
+void loop() 
+{
   char json[MESSAGE_MAX_LEN];
-  if (client.connected()) {
-
-    // Send message every second
-    if (millis() - lastMillis >= 1000) {
+  unsigned long currentMillis = millis();
+  
+  // Send message every second
+  if ((currentMillis - previousMillis) >= DEVICE_SEND_INTERVAL) 
+  {
+    if (wifiClient.connected()) 
+    {
+      previousMillis = currentMillis;
+      
       createMessage(json);
-      webSocketClient.sendData(json);
+      websocketClient.sendData(json);
+      
       Serial.println("Message sent: ");
       Serial.println(json);
-      lastMillis = millis();
     }
-  } 
-  else {
-    Serial.println("Client disconnected.");
-    while (1) {}
   }
 }

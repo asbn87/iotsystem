@@ -1,11 +1,8 @@
-#include <ESP8266WiFi.h>
-#include <time.h>
-
 // Package
 struct Package {
   float temperature = 0.0;
   float humidity = 0.0;
-  char* type = "temp/hum";
+  char* description = "temp/hum";
 
   String DateTime()
   {
@@ -56,13 +53,48 @@ void initWifi()
   Serial.println(WiFi.localIP());
 }
 
+void websocketConnect(WiFiClient& wifiClient)
+{
+  if (wifiClient.connect(webserverHost, webserverPort))
+  {
+    Serial.println("WebSocket connected.");
+  }
+  else 
+  {
+    Serial.println("WebSocket connection failed.");
+    while(1)
+    { 
+      // Hang on failure
+    }
+  }
+}
+
+void websocketHandshake(WiFiClient& wifiClient, WebSocketClient& websocketClient)
+{
+  websocketClient.path = websocketPath;
+  websocketClient.host = webserverHost;
+  
+  if (websocketClient.handshake(wifiClient))
+  {
+    Serial.println("WebSocket handshake successful");
+  } 
+  else
+  {
+    Serial.println("WebSocket handshake failed.");
+    while(1) 
+    {
+      // Hang on failure
+    }  
+  }
+}
+
 void createMessage(char* json) {
   data.updateReadings();
   StaticJsonBuffer<MESSAGE_MAX_LEN> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   root["dateTime"] = data.DateTime();
   root["mac"] = DEVICE_ID;
-  root["type"] = data.type;
+  root["description"] = data.description;
   
   JsonObject& dht = root.createNestedObject("dht");
   ((std::isnan(data.temperature)) ? dht["temperature"] = NULL : dht["temperature"] = data.temperature);
