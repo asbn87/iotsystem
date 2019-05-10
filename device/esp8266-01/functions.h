@@ -18,7 +18,7 @@ struct Package {
 
     // Format time
     ts = *localtime(&now);
-    ts.tm_hour++;
+    ts.tm_hour += 2; // Local Summertime Western Europe +2
     strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
   
     return (String)buf;
@@ -60,10 +60,10 @@ void createMessage(char* json) {
   data.updateReadings();
   StaticJsonBuffer<MESSAGE_MAX_LEN> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
-  root["deviceId"] = DEVICE_ID;
-  root["type"] = data.type;
   root["dateTime"] = data.DateTime();
-
+  root["mac"] = DEVICE_ID;
+  root["type"] = data.type;
+  
   JsonObject& dht = root.createNestedObject("dht");
   ((std::isnan(data.temperature)) ? dht["temperature"] = NULL : dht["temperature"] = data.temperature);
   ((std::isnan(data.humidity)) ? dht["humidity"] = NULL : dht["humidity"] = data.humidity);

@@ -47,9 +47,9 @@ unsigned long lastMillis = 0;
 void loop() {
   char json[MESSAGE_MAX_LEN];
   if (client.connected()) {
-    // Sends a message every 10th sec
-    if (millis() - lastMillis >= 10000)
-    {
+
+    // Send message every second
+    if (millis() - lastMillis >= 1000) {
       createMessage(json);
       webSocketClient.sendData(json);
       Serial.println("Message sent: ");
