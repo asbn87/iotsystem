@@ -8,6 +8,8 @@ public class Transporter
     Humidity humidity;
     Light light;
     Radiation radiation;
+    
+    public Transporter(){}
 
     public Device getDevice() 
     {
