@@ -1,51 +1,50 @@
 #include <ESP8266WiFi.h>
 #include <WebSocketClient.h>
+#include <ArduinoJson.h>
+#include <time.h>
 #include "config.h"
 #include "functions.h"
-
-volatile unsigned long counts = 0;
-unsigned long countsPerMinute = 0;
-unsigned long previousMillis = 0;
-  
-WebSocketClient websocketClient;
-WiFiClient wifiClient;
-
-void tube_impulse()
-{
-  counts++;
-}
 
 void setup()
 {
   pinMode(GEIGER_PIN, INPUT_PULLUP);
-  Serial.begin(115200);
+  initSerial(115200);
   attachInterrupt(digitalPinToInterrupt(GEIGER_PIN), tube_impulse, FALLING);
-
   initWifi();
+  
   delay(5000);
+
+  connectionString.toCharArray(websocketPath, WEBSOCKET_PATH_LENGTH);
   websocketConnect(wifiClient);
   websocketHandshake(wifiClient, websocketClient);
+
+  // Configuring time sync
+  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  Serial.println("Waiting on time sync...");
+  while (time(nullptr) < 1510644967) 
+  {
+    delay(10);
+  }
 }
 
 void loop()
 {
   unsigned long currentMillis = millis();
+  char json[MESSAGE_MAX_LEN];
 
   if ((currentMillis - previousMillis) >= LOG_PERIOD)
   {
     previousMillis = currentMillis;
-    countsPerMinute = counts * timeMultiplier;
-    float radiation = countsPerMinute * radiationMultiplier;
     
     if (wifiClient.connected())
     {
-      char json[40];
-      sprintf(json, "{\"deviceId\":%d,\"radiation\":%.2f}", DEVICE_ID, radiation);
+      createMessage(json);
       websocketClient.sendData(json);
+
+      Serial.println("Message sent: ");
+      Serial.println(json);
     }
     
-    Serial.printf("Radiation: %.2f uSv/h\n", radiation);
-	
     counts = 0;
   }
 }

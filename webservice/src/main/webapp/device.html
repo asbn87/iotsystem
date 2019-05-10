@@ -8,10 +8,18 @@
     </head>
     <body>
         <h2>Device</h2>
-        This page sends a static fake temperature measurement to the realtime 
-        websocket using device ID 1.
+        This page sends fake measurements to the realtime websocket.
         <br><br>
-        <button type="button" onclick="connect();">Connect</button>
-        <button type="button" onclick="send();">Send</button>
+        <button type="button" onclick="connectTempsensor();">Connect tempsensor</button>
+        <button type="button" onclick="sendTemperature();">Send temperature</button>
+        <br><br>
+        <button type="button" onclick="connectTempHum();">Connect temp/hum</button>
+        <button type="button" onclick="sendTempHum();">Send temp/hum</button>
+        <br><br>
+        <button type="button" onclick="connectRadiation();">Connect radiation</button>
+        <button type="button" onclick="sendRadiation();">Send radidation</button>
+        <br><br>
+        <button type="button" onclick="connectLight();">Connect light</button>
+        <button type="button" onclick="sendLight();">Send light</button>
     </body>
 </html>

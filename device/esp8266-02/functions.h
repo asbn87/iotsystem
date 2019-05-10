@@ -1,21 +1,66 @@
+// Package
+struct Package {
+  float radiation = 0.0;
+  char* description = "radiation";
+
+  String DateTime()
+  {
+    time_t now;
+    struct tm ts;
+    char buf[80];
+    
+    // Get current time
+    time(&now);
+
+    // Format time
+    ts = *localtime(&now);
+    ts.tm_hour += 2; // Local Summertime Western Europe +2
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
+  
+    return (String)buf;
+  }
+  
+  void updateReadings()
+  {
+    countsPerMinute = counts * timeMultiplier;
+    radiation = countsPerMinute * radiationMultiplier;
+  }
+};
+struct Package data;
+
+void initSerial(int baud)
+{
+  Serial.begin(baud);
+  delay(2000);
+  Serial.println("--Serial communication initiated--");
+  Serial.println("Baud rate: "+ String(baud));
+}
+
 void initWifi()
 {
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  Serial.println("\n--Wifi communication initiated--\nPlease wait...");
+  Serial.println("Connecting to: "+(String)WIFI_SSID);
+  WiFi.mode(WIFI_STA);
   
-  while (WiFi.status() != WL_CONNECTED)
+  while(WiFi.status() != WL_CONNECTED)
   {
-    delay(500);
-    Serial.print(".");
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    delay(10000);
   }
 
-  Serial.println("\nWiFi connected");  
-  Serial.println("IP address: ");
+  Serial.printf("\nConnected to Wifi Network %s \n", WIFI_SSID);
+  Serial.print("IP-adress: ");
   Serial.println(WiFi.localIP());
+}
+
+void tube_impulse()
+{
+  counts++;
 }
 
 void websocketConnect(WiFiClient& wifiClient)
 {
-  if (wifiClient.connect(destinationHost, destinationPort))
+  if (wifiClient.connect(webserverHost, webserverPort))
   {
     Serial.println("WebSocket connected.");
   }
@@ -32,7 +77,7 @@ void websocketConnect(WiFiClient& wifiClient)
 void websocketHandshake(WiFiClient& wifiClient, WebSocketClient& websocketClient)
 {
   websocketClient.path = websocketPath;
-  websocketClient.host = destinationHost;
+  websocketClient.host = webserverHost;
   
   if (websocketClient.handshake(wifiClient))
   {
@@ -46,4 +91,16 @@ void websocketHandshake(WiFiClient& wifiClient, WebSocketClient& websocketClient
       // Hang on failure
     }  
   }
+}
+
+void createMessage(char* json) {
+  data.updateReadings();
+  StaticJsonBuffer<MESSAGE_MAX_LEN> jsonBuffer;
+  JsonObject& root = jsonBuffer.createObject();
+  root["dateTime"] = data.DateTime();
+  root["mac"] = DEVICE_ID;
+  root["description"] = data.description;
+  root["radiation"] = data.radiation;
+
+  root.printTo(json, MESSAGE_MAX_LEN);
 }

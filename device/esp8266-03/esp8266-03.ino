@@ -1,36 +1,42 @@
 #include <ESP8266WiFi.h>
 #include <WebSocketClient.h>
+#include <ArduinoJson.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <time.h>
 #include "config.h"
 #include "functions.h"
 
-WebSocketClient websocketClient;
-WiFiClient wifiClient;
-
-OneWire oneWire(ONE_WIRE_PIN);
-DallasTemperature sensors(&oneWire);
-
 void setup()
 {
-  Serial.begin(115200);
+  initSerial(115200);
+  initWifi();
   sensors.begin();
 
-  initWifi();
   delay(5000);
+
+  connectionString.toCharArray(websocketPath, WEBSOCKET_PATH_LENGTH);
   websocketConnect(wifiClient);
   websocketHandshake(wifiClient, websocketClient);
+  
+  // Configuring time sync
+  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  Serial.println("Waiting on time sync...");
+  while (time(nullptr) < 1510644967) 
+  {
+    delay(10);
+  }
 }
 
 void loop()
 {
-  sensors.requestTemperatures();
-  float temperature = sensors.getTempCByIndex(TEMPSENSOR_1);
-
+  char json[MESSAGE_MAX_LEN];
   if (wifiClient.connected())
   {
-    char json[40];
-    sprintf(json, "{\"deviceId\":%d,\"temperature\":%.2f}", DEVICE_ID, temperature);
+    createMessage(json);
     websocketClient.sendData(json);
+
+    Serial.println("Message sent: ");
+    Serial.println(json);
   }
 }
