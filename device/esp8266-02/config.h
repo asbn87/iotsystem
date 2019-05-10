@@ -5,6 +5,10 @@
 #define MESSAGE_MAX_LEN 256
 #define WEBSOCKET_PATH_LENGTH 256
 
+WebSocketClient websocketClient;
+WiFiClient wifiClient;
+unsigned long previousMillis = 0;
+
 const unsigned long timeMultiplier = MAX_PERIOD / LOG_PERIOD;
 const float radiationMultiplier = 0.0057;
 

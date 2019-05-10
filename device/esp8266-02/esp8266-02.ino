@@ -5,10 +5,6 @@
 #include "config.h"
 #include "functions.h"
 
-WebSocketClient websocketClient;
-WiFiClient wifiClient;
-unsigned long previousMillis = 0;
-
 void setup()
 {
   pinMode(GEIGER_PIN, INPUT_PULLUP);
@@ -44,6 +40,9 @@ void loop()
     {
       createMessage(json);
       websocketClient.sendData(json);
+
+      Serial.println("Message sent: ");
+      Serial.println(json);
     }
     
     counts = 0;
