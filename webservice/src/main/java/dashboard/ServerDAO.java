@@ -38,7 +38,16 @@ public class ServerDAO implements DAOInterface
         }        
 
     @Override
-    public void addDataToDatabase(Transporter transporter) {
+    public void addDataToDatabase(Transporter transporter) 
+    {
+        if(transporter.getDevice() != null)
+        {
+            try{
+            PreparedStatement stmt = con.prepareStatement("call select_or_insert('?', '?');");
+            stmt.setString(1, transporter.getDevice().getMac());
+            stmt.setString(2, transporter.getDevice().getDescription());} 
+            catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
+        }
         if(transporter.getTime() != null)
         {
             try{
