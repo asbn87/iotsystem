@@ -1,11 +1,26 @@
-var ws;
+var wsRealtime;
+var wsHistory;
 
-function connect()
+function connectRealtime()
 {    
-    ws = new WebSocket("ws://localhost:8080/webservice/websocket/realtime/dashboard");
+    wsRealtime = new WebSocket("ws://localhost:8080/webservice/websocket/realtime/dashboard");
     
-    ws.onmessage = function(event) {
-        document.getElementById("output").innerHTML = event.data;
+    wsRealtime.onmessage = function(event)
+    {
+        document.getElementById("realtime").innerHTML = event.data;
+        console.log(event.data);
+    };
+}
+
+function connectHistory()
+{
+    console.log("Connecting to history websocket...");
+    wsHistory = new WebSocket("ws://localhost:8080/webservice/websocket/history");
+    console.log("Connected to history websocket.");
+
+    wsHistory.onmessage = function(event)
+    {
+        document.getElementById("history").innerHTML = event.data;
         console.log(event.data);
     };
 }

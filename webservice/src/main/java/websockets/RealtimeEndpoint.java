@@ -19,17 +19,17 @@ public class RealtimeEndpoint
 {
     private static final List<RealtimeEndpoint> deviceEndpoints = new CopyOnWriteArrayList<>();
     private static final List<RealtimeEndpoint> dashboardEndpoints = new CopyOnWriteArrayList<>();
-    private static final Map<Integer, Realtime> realtimeMeasurements = new ConcurrentHashMap<>();
+    private static final Map<String, Realtime> realtimeMeasurements = new ConcurrentHashMap<>();
     private Session session;
-    private String deviceId;
+    private String mac;
     
     @OnOpen
-    public void onOpen(Session session, @PathParam("deviceId") String deviceId)
+    public void onOpen(Session session, @PathParam("deviceId") String mac)
     {
-       this.session = session;
-       this.deviceId = deviceId;
+        this.session = session;
+        this.mac = mac;
        
-        switch (deviceId) {
+        switch (mac) {
             case "dashboard":
                 dashboardEndpoints.add(this);
                 System.out.println("Dashboard connected to realtime websocket.");
@@ -41,7 +41,7 @@ public class RealtimeEndpoint
                 
             default:
                 deviceEndpoints.add(this);
-                System.out.println("Device " + deviceId + " connected to realtime websocket.");
+                System.out.println(mac + " connected to realtime websocket.");
                 break;
         }
     }
@@ -58,8 +58,7 @@ public class RealtimeEndpoint
             dashboardEndpoints.remove(this);
         }
         
-        System.out.println("Device " + deviceId 
-                + " disconnected from realtime websocket.");
+        System.out.println(mac + " disconnected from realtime websocket.");
     }
 
     @OnError
@@ -71,7 +70,8 @@ public class RealtimeEndpoint
     @OnMessage
     public void onMessage(Session session, Realtime message)
     {
-        realtimeMeasurements.put(Integer.parseInt(deviceId), message);
+        message.setMac(mac);
+        realtimeMeasurements.put(mac, message);
         
         try
         {
@@ -96,15 +96,15 @@ public class RealtimeEndpoint
     {
         System.out.println("All realtime measurements stored in memory: ");
         
-        for (Map.Entry<Integer, Realtime> entry : realtimeMeasurements.entrySet())
+        for (Map.Entry<String, Realtime> entry : realtimeMeasurements.entrySet())
         {
-            int deviceId = entry.getKey();
+            String mac = entry.getKey();
             Float temperature = entry.getValue().getTemperature();
             Float humidity = entry.getValue().getHumidity();
             Float radiation = entry.getValue().getRaditation();
             Integer light = entry.getValue().getLight();
             
-            System.out.println("\nDevice ID: " + deviceId);
+            System.out.println("\nMAC: " + mac);
             System.out.println("Temperature: " + temperature);
             System.out.println("Humidity: " + humidity);
             System.out.println("Radiation: " + radiation);

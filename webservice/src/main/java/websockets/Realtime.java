@@ -2,21 +2,45 @@ package websockets;
 
 public class Realtime
 {
-    private Integer deviceId;
+    private String mac;
+    private String description;
+    private String dateTime;
     private Float temperature;
     private Float humidity;
     private Float radiation;
     private Integer light;
 
-    public int getDeviceId()
+    public String getMac()
     {
-        return deviceId;
+        return mac;
     }
     
-    public void setDeviceId(int deviceId)
+    public void setMac(String mac)
     {
-        this.deviceId = deviceId;
+        this.mac = mac;
     }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public String getDateTime()
+    {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime)
+    {
+        this.dateTime = dateTime;
+    }
+    
+    
     
     public float getTemperature()
     {
