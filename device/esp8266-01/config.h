@@ -5,6 +5,10 @@
 #define MESSAGE_MAX_LEN 256
 #define WEBSOCKET_PATH_LENGTH 256
 
+WebSocketClient websocketClient;
+WiFiClient wifiClient;
+unsigned long previousMillis = 0;
+
 // WiFi settings
 const static char* WIFI_SSID = "WIFI_SSID";
 const static char* WIFI_PASS = "WIFI_PASS";

@@ -95,10 +95,8 @@ void createMessage(char* json) {
   root["dateTime"] = data.DateTime();
   root["mac"] = DEVICE_ID;
   root["description"] = data.description;
-  
-  JsonObject& dht = root.createNestedObject("dht");
-  ((std::isnan(data.temperature)) ? dht["temperature"] = NULL : dht["temperature"] = data.temperature);
-  ((std::isnan(data.humidity)) ? dht["humidity"] = NULL : dht["humidity"] = data.humidity);
+  ((std::isnan(data.temperature)) ? root["temperature"] = NULL : root["temperature"] = data.temperature);
+  ((std::isnan(data.humidity)) ? root["humidity"] = NULL : root["humidity"] = data.humidity);
 
   root.printTo(json, MESSAGE_MAX_LEN);
 }

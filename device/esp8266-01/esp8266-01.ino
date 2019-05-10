@@ -6,10 +6,6 @@
 #include "config.h"
 #include "functions.h"
 
-WebSocketClient websocketClient;
-WiFiClient wifiClient; // Use WiFiClient class to create TCP connections
-unsigned long previousMillis = 0;
-
 void setup() 
 {
   initSerial(115200);
