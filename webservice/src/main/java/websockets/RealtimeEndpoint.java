@@ -36,6 +36,7 @@ public class RealtimeEndpoint
                 break;
                 
             case "log":
+                System.out.println("Received database save request.");
                 dbSave();
                 break;
                 
@@ -99,12 +100,16 @@ public class RealtimeEndpoint
         for (Map.Entry<String, Realtime> entry : realtimeMeasurements.entrySet())
         {
             String mac = entry.getKey();
+            String description = entry.getValue().getDescription();
+            String dateTime = entry.getValue().getDateTime();
             Float temperature = entry.getValue().getTemperature();
             Float humidity = entry.getValue().getHumidity();
             Float radiation = entry.getValue().getRaditation();
             Integer light = entry.getValue().getLight();
             
             System.out.println("\nMAC: " + mac);
+            System.out.println("Description: " + description);
+            System.out.println("Date time: " + dateTime);
             System.out.println("Temperature: " + temperature);
             System.out.println("Humidity: " + humidity);
             System.out.println("Radiation: " + radiation);
