@@ -1,9 +1,11 @@
 var wsRealtime;
 var wsHistory;
+var pathRealtime = "ws://" + location.hostname + (location.port ? ":" + location.port: "") + "/webservice/websocket/realtime/dashboard";
+var pathHistory = "ws://" + location.hostname + (location.port ? ":" + location.port: "") + "/webservice/websocket/history";
 
 function connectRealtime()
 {    
-    wsRealtime = new WebSocket("ws://localhost:8080/webservice/websocket/realtime/dashboard");
+    wsRealtime = new WebSocket(pathRealtime);
     
     wsRealtime.onmessage = function(event)
     {
@@ -38,7 +40,7 @@ function connectRealtime()
 function connectHistory()
 {
     console.log("Connecting to history websocket...");
-    wsHistory = new WebSocket("ws://localhost:8080/webservice/websocket/history");
+    wsHistory = new WebSocket(pathHistory);
     console.log("Connected to history websocket.");
 
     wsHistory.onmessage = function(event)
