@@ -1,5 +1,7 @@
 #define DEVICE_ID WiFi.macAddress()
 #define ONE_WIRE_PIN 5
+#define LED_GREEN_PIN 12
+#define LED_RED_PIN 14
 #define TEMPSENSOR_1 0
 #define MESSAGE_MAX_LEN 256
 #define WEBSOCKET_PATH_LENGTH 256

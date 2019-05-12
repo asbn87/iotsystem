@@ -1,6 +1,8 @@
 #define DEVICE_ID WiFi.macAddress()
-#define SCL_PIN 4
-#define SDA_PIN 5
+#define SDA_PIN 4
+#define SCL_PIN 5
+#define LED_GREEN_PIN 12
+#define LED_RED_PIN 14
 #define SEND_INTERVAL 100
 #define MESSAGE_MAX_LEN 256
 #define WEBSOCKET_PATH_LENGTH 256

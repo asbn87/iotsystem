@@ -1,5 +1,7 @@
 #define DEVICE_ID WiFi.macAddress()
 #define GEIGER_PIN 5
+#define LED_GREEN_PIN 12
+#define LED_RED_PIN 14
 #define LOG_PERIOD 15000 // Logging period in milliseconds
 #define MAX_PERIOD 60000 // Maximum logging period
 #define MESSAGE_MAX_LEN 256
