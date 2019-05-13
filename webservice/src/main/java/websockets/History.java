@@ -2,16 +2,22 @@ package websockets;
 
 import java.util.ArrayList;
 import java.util.List;
+import transporter.Transporter;
 
 public class History
 {
-    private List<Float> temperatures = new ArrayList<>();
+    private List<Transporter> transporters = new ArrayList<>();
 
-    public List<Float> getTemperatures() {
-        return temperatures;
+    public History(List<Transporter> transporters)
+    {
+        this.transporters = transporters;
+    }
+    
+    public List<Transporter> getTransporters() {
+        return transporters;
     }
 
-    public void setTemperatures(List<Float> temperatures) {
-        this.temperatures = temperatures;
+    public void setTransporters(List<Transporter> transporters) {
+        this.transporters = transporters;
     }
 }

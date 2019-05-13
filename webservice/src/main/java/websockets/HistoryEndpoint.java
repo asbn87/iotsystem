@@ -1,5 +1,6 @@
 package websockets;
 
+import dashboard.ServerDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +12,13 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import transporter.Transporter;
 
 @ServerEndpoint(value = "/websocket/history", decoders = HistoryDecoder.class, encoders = HistoryEncoder.class)
 public class HistoryEndpoint 
 {
     private static final List<HistoryEndpoint> dashboardEndpoints = new CopyOnWriteArrayList<>();
+    private static final ServerDAO serverDAO = new ServerDAO();
     private Session session;
     
     @OnOpen
@@ -23,24 +26,9 @@ public class HistoryEndpoint
     {
         this.session = session;      
         dashboardEndpoints.add(this);
-        
-        History history = new History();
-        List<Float> temperatures = new ArrayList<>();
-        temperatures.add(14.8f);
-        temperatures.add(23.1f);
-        history.setTemperatures(temperatures);
-        
         System.out.println("Dashboard connected to historical websocket.");
-
-            try
-            {
-               Thread.sleep(10);
-               this.session.getBasicRemote().sendObject(history);
-            }
-            catch (IOException | EncodeException | InterruptedException e)
-            {
-                e.printStackTrace();
-            }
+            
+        pushHistory();
     }
 
     @OnClose
@@ -63,5 +51,23 @@ public class HistoryEndpoint
     public void onMessage(Session session, History history)
     {
         System.out.println("We got an message from the dashboard!");
-    }  
+        pushHistory();
+    }
+    
+    private void pushHistory()
+    {
+        serverDAO.connectToDatabase();
+        List<Transporter> transporters = serverDAO.retrieveLatest6HData();
+        History history = new History(serverDAO.retrieveLatest6HData());
+        
+        try
+        {
+           Thread.sleep(100);
+           this.session.getBasicRemote().sendObject(history);
+        }
+        catch (IOException | EncodeException | InterruptedException e)
+        {
+            e.printStackTrace();
+        }   
+    }
 }
