@@ -62,10 +62,12 @@ public class HistoryEndpoint
         
         try
         {
-           Thread.sleep(100);
-           this.session.getBasicRemote().sendObject(history);
+            for (HistoryEndpoint endpoint : dashboardEndpoints)
+            {
+                endpoint.session.getBasicRemote().sendObject(history);
+            }
         }
-        catch (IOException | EncodeException | InterruptedException e)
+        catch (IOException | EncodeException e)
         {
             e.printStackTrace();
         }   
