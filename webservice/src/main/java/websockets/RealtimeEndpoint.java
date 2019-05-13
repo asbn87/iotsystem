@@ -88,7 +88,6 @@ public class RealtimeEndpoint
         try
         {
             broadcast(message);
-            System.out.println("Broadcasted message.");
         }
         catch (IOException | EncodeException e)
         {
@@ -128,24 +127,26 @@ public class RealtimeEndpoint
             
             Transporter transporter = new Transporter();            
             transporter.setDevice(new Device(entry.getKey(), entry.getValue().getDescription()));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             transporter.setTime(new Time(LocalDateTime.parse(entry.getValue().getDateTime(), formatter)));
-            if(!temperature.isEmpty())
+            if(temperature != null)
             {
                 transporter.setTemperature(new Temperature(Float.parseFloat(temperature)));
             }
-            if(!humidity.isEmpty())
+            if(humidity != null)
             {
                 transporter.setHumidity(new Humidity(Float.parseFloat(humidity)));
             }
-            if(!light.isEmpty())
+            if(light != null)
             {
                 transporter.setLight(new Light(Integer.parseInt(light)));
             }
-            if(!radiation.isEmpty())
+            if(radiation != null)
             {
                 transporter.setRadiation(new Radiation(Float.parseFloat(radiation)));
             }
+            
+            serverDAO.connectToDatabase();
             serverDAO.addDataToDatabase(transporter);
         }
     }
