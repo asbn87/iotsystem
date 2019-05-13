@@ -3,6 +3,7 @@ package dashboard;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,7 +39,7 @@ public class ServerDAO implements DAOInterface
     {
         try {
             Properties p = new Properties();
-            p.load(new FileInputStream(""));
+            p.load(getClass().getResourceAsStream("database.properties"));
             
             Class.forName("com.mysql.cj.jdbc.Driver");
             
