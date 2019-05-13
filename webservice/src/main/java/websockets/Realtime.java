@@ -5,10 +5,10 @@ public class Realtime
     private String mac;
     private String description;
     private String dateTime;
-    private Float temperature;
-    private Float humidity;
-    private Float radiation;
-    private Integer light;
+    private String temperature;
+    private String humidity;
+    private String radiation;
+    private String light;
 
     public String getMac()
     {
@@ -40,39 +40,39 @@ public class Realtime
         this.dateTime = dateTime;
     }
     
-    public float getTemperature()
+    public String getTemperature()
     {
         return temperature;
     }
 
-    public void setTemperature(Float temperature)
+    public void setTemperature(String temperature)
     {
         this.temperature = temperature;
     }
 
-    public Float getHumidity()
+    public String getHumidity()
     {
         return humidity;
     }
 
-    public void setHumidity(Float humidity)
+    public void setHumidity(String humidity)
     {
         this.humidity = humidity;
     }
 
-    public Float getRaditation() {
+    public String getRaditation() {
         return radiation;
     }
 
-    public void setRaditation(Float radiation) {
+    public void setRaditation(String radiation) {
         this.radiation = radiation;
     }
 
-    public Integer getLight() {
+    public String getLight() {
         return light;
     }
 
-    public void setLight(Integer light) {
+    public void setLight(String light) {
         this.light = light;
     }
 }

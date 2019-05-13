@@ -1,5 +1,6 @@
 package websockets;
 
+import dashboard.ServerDAO;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,15 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import transporter.Device;
+import transporter.Temperature;
+import transporter.Time;
+import transporter.Transporter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import transporter.Humidity;
+import transporter.Light;
+import transporter.Radiation;
 
 @ServerEndpoint(value = "/websocket/realtime/{deviceId}", decoders = RealtimeDecoder.class, encoders = RealtimeEncoder.class)
 public class RealtimeEndpoint
@@ -22,6 +32,7 @@ public class RealtimeEndpoint
     private static final Map<String, Realtime> realtimeMeasurements = new ConcurrentHashMap<>();
     private Session session;
     private String mac;
+    static ServerDAO serverDAO = new ServerDAO();
     
     @OnOpen
     public void onOpen(Session session, @PathParam("deviceId") String mac)
@@ -100,12 +111,12 @@ public class RealtimeEndpoint
         for (Map.Entry<String, Realtime> entry : realtimeMeasurements.entrySet())
         {
             String mac = entry.getKey();
-            String description = entry.getValue().getDescription();
-            String dateTime = entry.getValue().getDateTime();
-            Float temperature = entry.getValue().getTemperature();
-            Float humidity = entry.getValue().getHumidity();
-            Float radiation = entry.getValue().getRaditation();
-            Integer light = entry.getValue().getLight();
+            String description = entry.getValue().getDescription();           
+            String dateTime = entry.getValue().getDateTime();            
+            String temperature = entry.getValue().getTemperature();
+            String humidity = entry.getValue().getHumidity();
+            String radiation = entry.getValue().getRaditation();
+            String light = entry.getValue().getLight();
             
             System.out.println("\nMAC: " + mac);
             System.out.println("Description: " + description);
@@ -114,6 +125,28 @@ public class RealtimeEndpoint
             System.out.println("Humidity: " + humidity);
             System.out.println("Radiation: " + radiation);
             System.out.println("Light: " + light);
+            
+            Transporter transporter = new Transporter();            
+            transporter.setDevice(new Device(entry.getKey(), entry.getValue().getDescription()));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            transporter.setTime(new Time(LocalDateTime.parse(entry.getValue().getDateTime(), formatter)));
+            if(!temperature.equalsIgnoreCase(""))
+            {
+                transporter.setTemperature(new Temperature(Float.parseFloat(temperature)));
+            }
+            if(!humidity.equalsIgnoreCase(""))
+            {
+                transporter.setHumidity(new Humidity(Float.parseFloat(humidity)));
+            }
+            if(!light.equalsIgnoreCase(""))
+            {
+                transporter.setLight(new Light(Integer.parseInt(light)));
+            }
+            if(!radiation.equalsIgnoreCase(""))
+            {
+                transporter.setRadiation(new Radiation(Float.parseFloat(radiation)));
+            }
+            serverDAO.addDataToDatabase(transporter);
         }
     }
 }

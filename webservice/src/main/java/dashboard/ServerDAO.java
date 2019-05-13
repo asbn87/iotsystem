@@ -28,7 +28,7 @@ public class ServerDAO implements DAOInterface
 {
     Connection con;
     
-    public ServerDAO() throws ClassNotFoundException
+    public ServerDAO()
     {
         connectToDatabase();        
     }
