@@ -55,52 +55,58 @@ public class ServerDAO implements DAOInterface
         if(transporter.getDevice() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("call select_or_insert('?', '?');");
+            PreparedStatement stmt = con.prepareStatement("call select_or_insert(?, ?);");
             stmt.setString(1, transporter.getDevice().getMac());
-            stmt.setString(2, transporter.getDevice().getDescription());} 
+            stmt.setString(2, transporter.getDevice().getDescription());
+            int u = stmt.executeUpdate();} 
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
         }
         if(transporter.getTime() != null)
         {
             try{
             PreparedStatement stmt = con.prepareStatement("INSERT INTO times (Time) VALUES (?)");
-            stmt.setObject(1, transporter.getTime().getTime());} 
+            stmt.setObject(1, transporter.getTime().getTime());
+            int u = stmt.executeUpdate();} 
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
         }
         if(transporter.getTemperature() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO temperatures (DeviceId, Temperature_C, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = '?'), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO temperatures (DeviceId, Temperature_C, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getTemperature().getTemperature_C());
-            stmt.setObject(3, transporter.getTime().getTime());}
+            stmt.setObject(3, transporter.getTime().getTime());
+            int u = stmt.executeUpdate();}
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}               
         }
         if(transporter.getHumidity() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO humiditys (DeviceId, Humidity_pct, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = '?'), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO humiditys (DeviceId, Humidity_pct, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getHumidity().getHumidity_pct());
-            stmt.setObject(3, transporter.getTime().getTime());}
+            stmt.setObject(3, transporter.getTime().getTime());
+            int u = stmt.executeUpdate();}
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
         }
         if(transporter.getLight() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO light (DeviceId, Lux, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = '?'), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO light (DeviceId, Lux, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getLight().getLux());
-            stmt.setObject(3, transporter.getTime().getTime());}
+            stmt.setObject(3, transporter.getTime().getTime());
+            int u = stmt.executeUpdate();}
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
         }
         if(transporter.getRadiation() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO radiation (DeviceId, Siverts_uSv, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = '?'), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO radiation (DeviceId, Siverts_uSv, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getRadiation().getSiverts_uSv());
-            stmt.setObject(3, transporter.getTime().getTime());}
+            stmt.setObject(3, transporter.getTime().getTime());
+            int u = stmt.executeUpdate();}
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
         }
     } 
