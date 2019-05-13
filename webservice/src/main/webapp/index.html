@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link href="main.css" type="text/css" rel="stylesheet">
-        <!--<script type="text/javascript" src="websocket.js"></script>-->
+        <script type="text/javascript" src="dashboardWebsocket.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <title>IoT System</title>
@@ -24,7 +24,7 @@
                         <div style="padding: 10px 0; text-align: center; color: white;">
                             <span id="dht-temperature-label"><b>Temperature</b></span>
                                 <br />
-                            <span id="dht-temperature-value">20°C</span>
+                            <span id="dht-temperature-value"></span>
                         </div>
                     </div>
 
@@ -33,7 +33,7 @@
                         <div style="padding: 10px 0; text-align: center; color: white;">
                             <span id="dht-humidity-label"><b>Humidity</b></span>
                                 <br />
-                            <span id="dht-humidity-value">23%</span>
+                            <span id="dht-humidity-value"></span>
                         </div>
                     </div>
 
@@ -42,7 +42,7 @@
                         <div style="padding: 10px 0; text-align: center; color: white;">
                             <span id="dallas-temperature-label"><b>Water Temperature</b></span>
                                 <br />
-                            <span id="dallas-temperature-value">36°C</span>
+                            <span id="dallas-temperature-value"></span>
                         </div>
                     </div>
 
@@ -51,7 +51,7 @@
                         <div style="padding: 10px 0; text-align: center; color: white;">
                             <span id="radiation-label"><b>Radiation</b></span>
                                 <br />
-                            <span id="radiation-value">0.1 µSv</span>
+                            <span id="radiation-value"></span>
                         </div>
                     </div>
 
@@ -60,7 +60,7 @@
                         <div style="padding: 10px 0; text-align: center; color: white;">
                             <span id="light-label"><b>Light</b></span>
                                 <br />
-                            <span id="light-value">300 lx</span>
+                            <span id="light-value"></span>
                         </div>
                     </div>
 
@@ -68,7 +68,7 @@
                     <div class="col-1 flex-col" style="background-color: #1C1F1F; padding: 10px 0; text-align: center; color: white;">
                         <span id="update-label" style="padding: 10px 0;"><b>Updated:</b></span>
                             <br />
-                        <span id="update-value">HH:mm:ss</span>
+                        <span id="update-value"></span>
                     </div>
 
                 </div>
