@@ -9,6 +9,10 @@
 
 void setup()
 {
+  pinMode(LED_GREEN_PIN, OUTPUT);
+  pinMode(LED_RED_PIN, OUTPUT);
+  ledStatus(LED_STATUS_RED);
+  
   initSerial(115200);
   initWifi();
   sensors.begin();
@@ -26,6 +30,8 @@ void setup()
   {
     delay(10);
   }
+  
+  ledStatus(LED_STATUS_GREEN);
 }
 
 void loop()
@@ -33,10 +39,13 @@ void loop()
   char json[MESSAGE_MAX_LEN];
   if (wifiClient.connected())
   {
+    ledStatus(LED_STATUS_OFF);
     createMessage(json);
     websocketClient.sendData(json);
 
     Serial.println("Message sent: ");
     Serial.println(json);
+
+    ledStatus(LED_STATUS_GREEN);
   }
 }

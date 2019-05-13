@@ -7,7 +7,11 @@
 
 void setup()
 {
+  pinMode(LED_GREEN_PIN, OUTPUT);
+  pinMode(LED_RED_PIN, OUTPUT);
   pinMode(GEIGER_PIN, INPUT_PULLUP);
+  ledStatus(LED_STATUS_RED);
+  
   initSerial(115200);
   attachInterrupt(digitalPinToInterrupt(GEIGER_PIN), tube_impulse, FALLING);
   initWifi();
@@ -25,6 +29,8 @@ void setup()
   {
     delay(10);
   }
+
+  ledStatus(LED_STATUS_GREEN);
 }
 
 void loop()
@@ -34,6 +40,7 @@ void loop()
 
   if ((currentMillis - previousMillis) >= LOG_PERIOD)
   {
+    ledStatus(LED_STATUS_OFF);
     previousMillis = currentMillis;
     
     if (wifiClient.connected())
@@ -46,5 +53,6 @@ void loop()
     }
     
     counts = 0;
+    ledStatus(LED_STATUS_GREEN);
   }
 }

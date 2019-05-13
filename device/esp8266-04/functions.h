@@ -1,3 +1,10 @@
+typedef enum 
+{
+  LED_STATUS_RED,
+  LED_STATUS_GREEN,
+  LED_STATUS_OFF
+} LED_STATUS;
+
 // Package
 struct Package {
   uint16_t light = 0;
@@ -94,4 +101,18 @@ void createMessage(char* json) {
   root["light"] = data.light;
 
   root.printTo(json, MESSAGE_MAX_LEN);
+}
+
+void ledStatus(LED_STATUS ledStatus)
+{
+  if (ledStatus == LED_STATUS_RED)
+  {
+    digitalWrite(LED_GREEN_PIN, LOW);
+    digitalWrite(LED_RED_PIN, HIGH);
+  }
+  else
+  {
+    digitalWrite(LED_RED_PIN, LOW);
+    digitalWrite(LED_GREEN_PIN, HIGH);
+  }
 }
