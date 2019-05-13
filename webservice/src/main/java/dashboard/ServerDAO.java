@@ -67,7 +67,7 @@ public class ServerDAO implements DAOInterface
         if(transporter.getTime() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO times (Time) VALUES (?)");
+            PreparedStatement stmt = con.prepareStatement("call add_time(?)");
             stmt.setObject(1, transporter.getTime().getTime());
             int u = stmt.executeUpdate();} 
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
