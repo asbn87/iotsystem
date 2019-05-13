@@ -75,7 +75,7 @@ public class ServerDAO implements DAOInterface
         if(transporter.getTemperature() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO temperatures (DeviceId, Temperature_C, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("SET SQL_SAFE_UPDATES=0; INSERT INTO temperatures (DeviceId, Temperature_C, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getTemperature().getTemperature_C());
             stmt.setObject(3, transporter.getTime().getTime());
@@ -85,7 +85,7 @@ public class ServerDAO implements DAOInterface
         if(transporter.getHumidity() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO humiditys (DeviceId, Humidity_pct, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("SET SQL_SAFE_UPDATES=0; INSERT INTO humiditys (DeviceId, Humidity_pct, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getHumidity().getHumidity_pct());
             stmt.setObject(3, transporter.getTime().getTime());
@@ -95,7 +95,7 @@ public class ServerDAO implements DAOInterface
         if(transporter.getLight() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO light (DeviceId, Lux, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("SET SQL_SAFE_UPDATES=0; INSERT INTO light (DeviceId, Lux, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getLight().getLux());
             stmt.setObject(3, transporter.getTime().getTime());
@@ -105,7 +105,7 @@ public class ServerDAO implements DAOInterface
         if(transporter.getRadiation() != null)
         {
             try{
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO radiation (DeviceId, Siverts_uSv, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
+            PreparedStatement stmt = con.prepareStatement("SET SQL_SAFE_UPDATES=0; INSERT INTO radiation (DeviceId, Siverts_uSv, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
             stmt.setFloat(2, transporter.getRadiation().getSiverts_uSv());
             stmt.setObject(3, transporter.getTime().getTime());
