@@ -130,19 +130,19 @@ public class RealtimeEndpoint
             transporter.setDevice(new Device(entry.getKey(), entry.getValue().getDescription()));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             transporter.setTime(new Time(LocalDateTime.parse(entry.getValue().getDateTime(), formatter)));
-            if(!temperature.equalsIgnoreCase(""))
+            if(!temperature.isEmpty())
             {
                 transporter.setTemperature(new Temperature(Float.parseFloat(temperature)));
             }
-            if(!humidity.equalsIgnoreCase(""))
+            if(!humidity.isEmpty())
             {
                 transporter.setHumidity(new Humidity(Float.parseFloat(humidity)));
             }
-            if(!light.equalsIgnoreCase(""))
+            if(!light.isEmpty())
             {
                 transporter.setLight(new Light(Integer.parseInt(light)));
             }
-            if(!radiation.equalsIgnoreCase(""))
+            if(!radiation.isEmpty())
             {
                 transporter.setRadiation(new Radiation(Float.parseFloat(radiation)));
             }
