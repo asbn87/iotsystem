@@ -2,14 +2,27 @@
     Custom styling
 */
 
+html {
+    margin: 0;
+    padding: 0;
+    background-color: #343434;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1C1F1F;
+    min-height: 100%;
+}
+
 * {
   box-sizing: border-box;
 }
 
 [class*="col-"] {
   float: left;
-  padding: 15px;
-  border: 1px solid red;
+  padding: 0;
 }
 
 .col-1 {width: 8.33%;}
@@ -31,8 +44,25 @@
   display: table;
 }
 
+.flex-container {
+    display: flex;
+    width: 100%;
+}
+
+.flex-col {
+    flex: 1;
+}
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones */
+    .flex-container {
+        display: block;
+    }
+    
+    .flex-col {
+        width: 100%;
+    }
+    
     [class*="col-"] {
         width: 100%;
     }

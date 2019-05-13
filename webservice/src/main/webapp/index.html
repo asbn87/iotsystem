@@ -10,63 +10,184 @@
         <title>IoT System</title>
     </head>
     <body>
-        <div class="row">
-            <div class="col-12" style="text-align: center; height: 110px">
-                <h1>IoT System Dashboard</h1>
+        <div class="main">
+            <div class="row" style="height: 30%; margin: 0; padding: 0; border-bottom: 1px solid #FFF">
+                <div class="flex-container">
+
+                    <!-- Whitespace -->
+                    <div class="col-1 flex-col" style="background-color: #1C1F1F; padding: 10px 0; text-align: center; color: white;">
+                        <h4 id="realtime-title" style="padding: 10px 0; margin: 0">REALTIME:</h4>
+                    </div>
+
+                    <!-- Dht11 sensor temperature -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="dht-temperature-label"><b>Temperature</b></span>
+                                <br />
+                            <span id="dht-temperature-value">20°C</span>
+                        </div>
+                    </div>
+
+                    <!-- Dht11 sensor humidity -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="dht-humidity-label"><b>Humidity</b></span>
+                                <br />
+                            <span id="dht-humidity-value">23%</span>
+                        </div>
+                    </div>
+
+                    <!-- Dallas sensor temperature -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="dallas-temperature-label"><b>Water Temperature</b></span>
+                                <br />
+                            <span id="dallas-temperature-value">36°C</span>
+                        </div>
+                    </div>
+
+                    <!-- Radiation sensor -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="radiation-label"><b>Radiation</b></span>
+                                <br />
+                            <span id="radiation-value">0.1 µSv</span>
+                        </div>
+                    </div>
+
+                    <!-- Light sensor -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="light-label"><b>Light</b></span>
+                                <br />
+                            <span id="light-value">300 lx</span>
+                        </div>
+                    </div>
+
+                    <!-- Whitespace -->
+                    <div class="col-1 flex-col" style="background-color: #1C1F1F; padding: 10px 0; text-align: center; color: white;">
+                        <span id="update-label" style="padding: 10px 0;"><b>Updated:</b></span>
+                            <br />
+                        <span id="update-value">HH:mm:ss</span>
+                    </div>
+
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <!-- Dht11 sensor -->
-                <canvas id="temperature" height="200"></canvas>
+
+            <div class="row" style="margin: 0; padding: 0;">
+                <div class="flex-container">
+
+                    <div class="col-4 flex-col">
+                        <canvas id="dht-temperature"></canvas>
+                    </div>
+
+                    <div class="col-4 flex-col">
+                        <canvas id="dht-humidity"></canvas>
+                    </div>
+
+                    <div class="col-4 flex-col">
+                        <canvas id="dallas-temperature"></canvas>
+                    </div>
+
+                </div>
             </div>
-            <div class="col-3">
-                <!-- Dallas temperature sensor -->
-                <canvas id="humidity" height="200"></canvas>
-            </div>
-            <div class="col-3">
-                <!-- Radiation sensor -->
-                <canvas id="radiation" height="200"></canvas>
-            </div>
-            <div class="col-3">
-                <!-- Light sensor -->
-                <canvas id="light" height="200"></canvas>
+
+            <div class="row" style="height: 40%; margin: 0; padding: 0;">
+                <div class="flex-container">
+
+                    <div class="col-6 flex-col">
+                        <canvas id="radiation"></canvas>
+                    </div>
+
+                    <div class="col-6 flex-col">
+                        <canvas id="light"></canvas>
+                    </div>
+
+                </div>
             </div>
         </div>
         <script>
-            var tempCtx = document.getElementById('temperature').getContext('2d');
-            var humCtx = document.getElementById('humidity').getContext('2d');
+            var dhtTempCtx = document.getElementById('dht-temperature').getContext('2d');
+            var dhtHumCtx = document.getElementById('dht-humidity').getContext('2d');
+            var dallasTempCtx = document.getElementById('dallas-temperature').getContext('2d');
             var radCtx = document.getElementById('radiation').getContext('2d');
             var lightCtx = document.getElementById('light').getContext('2d');
+            
+            var minArray = [];
+            var min = 1;
+
+            while(min <= 60) {
+                minArray[min] = min;
+                min++;
+            }
             setInterval(update, 1000);
+            
+            var dhtTempDataColor = '#50EFDA';
+            var dhtHumDataColor = '#692D8D';
+            var dallasTempDataColor = '#D564AB';         
+            var radDataColor = '#FDB592';
+            var lightDataColor = '#FEE29E';
 
             function update() 
             {
+                var dataArray = [];
+                var data = 1;
+            
+                while(data <= 60) {
+                    dataArray[data] = Math.random();
+                    data++;
+                }
                 var d = new Date();
                 var t = d.toLocaleTimeString();
-              
-                var tempChart = new Chart(tempCtx, 
+
+                var dhtTempChart = new Chart(dhtTempCtx,
                 {
                     // The type of chart we want to create
-                    type: 'bar',
+                    type: 'line',
 
                     // The data for our dataset
                     data: 
                     {
-                        labels: [t],
+                        labels: minArray,
                         datasets: 
                         [{
-                            label: 'Temperature',
-                            backgroundColor: '#173F5F',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
+                            data: dataArray,
+                            type: 'line',
+                            pointRadius: 0,
+                            fill: true,
+                            lineTension: 0,
+                            borderWidth: 2,
+                            backgroundColor: dhtTempDataColor,
+                            borderColor: dhtTempDataColor,
+                            pointBorderColor: dhtTempDataColor,
+                            pointBackgroundColor: dhtTempDataColor,
+                            pointHoverBackgroundColor: dhtTempDataColor,
+                            pointHoverBorderColor: dhtTempDataColor
                         }]
                     },
 
                     // Configuration options go here
                     options: 
                     {
-                        //animation: true,
+                        animation: false,
+                        scales:
+                        {
+                            yAxes: [{
+                                gridLines: {
+                                  display: false,
+                                  color: '#FFF'
+                                },
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: '#FFF'
+                                }
+                            }],
+                          xAxes: [{
+                                ticks: {
+                                    fontColor: '#FFF'
+                                }
+                            }]
+                        },
                         legend: 
                         { 
                             display: false 
@@ -74,33 +195,57 @@
                         title: 
                         {
                             display: true,
-                            text: 'Temperature'
+                            text: 'Temperature( °C )',
+                            fontColor: '#FFF'
                         }
                     }
                 });
                 
 
-                var humChart = new Chart(humCtx, 
+                var dhtHumChart = new Chart(dhtHumCtx, 
                 {
                     // The type of chart we want to create
-                    type: 'bar',
+                    type: 'line',
 
                     // The data for our dataset
                     data: 
                     {
-                        labels: [t],
+                        labels: minArray,
                         datasets: 
                         [{
-                            label: 'Humidity',
-                            backgroundColor: '#F6D55C',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
+                            data: dataArray,
+                            type: 'line',
+                            pointRadius: 0,
+                            fill: true,
+                            lineTension: 0,
+                            borderWidth: 2,
+                            backgroundColor: dhtHumDataColor,
+                            borderColor: dhtHumDataColor,
+                            pointBorderColor: dhtHumDataColor,
+                            pointBackgroundColor: dhtHumDataColor,
+                            pointHoverBackgroundColor: dhtHumDataColor,
+                            pointHoverBorderColor: dhtHumDataColor
                         }]
                     },
 
                     // Configuration options go here
                     options: 
                     {
+                        animation: false,
+                        scales:
+                        {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: '#FFF'
+                                }
+                            }],
+                          xAxes: [{
+                                ticks: {
+                                    fontColor: '#FFF'
+                                }
+                            }]
+                        },
                         legend: 
                         { 
                             display: false 
@@ -108,7 +253,66 @@
                         title: 
                         {
                             display: true,
-                            text: 'Humidity'
+                            text: 'Humidity( % )',
+                            fontColor: '#FFF'
+                        }
+                    }
+                });
+                
+                var dallasTempChart = new Chart(dallasTempCtx, 
+                {
+                    // The type of chart we want to create
+                    type: 'line',
+
+                    // The data for our dataset
+                    data: 
+                    {
+                        labels: minArray,
+                        datasets: 
+                        [{
+                            data: dataArray,
+                            fontColor: '#FFF',
+                            type: 'line',
+                            pointRadius: 0,
+                            fill: true,
+                            lineTension: 0,
+                            borderWidth: 2,
+                            backgroundColor: dallasTempDataColor,
+                            borderColor: dallasTempDataColor,
+                            pointBorderColor: dallasTempDataColor,
+                            pointBackgroundColor: dallasTempDataColor,
+                            pointHoverBackgroundColor: dallasTempDataColor,
+                            pointHoverBorderColor: dallasTempDataColor
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: 
+                    {
+                        animation: false,
+                        scales:
+                        {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: '#FFF'
+                                }
+                            }],
+                          xAxes: [{
+                                ticks: {
+                                    fontColor: '#FFF'
+                                }
+                            }]
+                        },
+                        legend: 
+                        {   
+                            display: false
+                        },
+                        title: 
+                        {
+                            display: true,
+                            text: 'Water Temperature( °C )',
+                            fontColor: '#FFF'
                         }
                     }
                 });
@@ -116,24 +320,47 @@
                 var radChart = new Chart(radCtx, 
                 {
                     // The type of chart we want to create
-                    type: 'bar',
+                    type: 'line',
 
                     // The data for our dataset
                     data: 
                     {
-                        labels: [t],
+                        labels: minArray,
                         datasets: 
                         [{
-                            label: 'Radiation',
-                            backgroundColor: '#ED553B',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
+                            data: dataArray,
+                            type: 'line',
+                            pointRadius: 0,
+                            fill: true,
+                            lineTension: 0,
+                            borderWidth: 2,
+                            backgroundColor: radDataColor,
+                            borderColor: radDataColor,
+                            pointBorderColor: radDataColor,
+                            pointBackgroundColor: radDataColor,
+                            pointHoverBackgroundColor: radDataColor,
+                            pointHoverBorderColor: radDataColor
                         }]
                     },
 
                     // Configuration options go here
                     options: 
                     {
+                        animation: false,
+                        scales:
+                        {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: '#FFF'
+                                }
+                            }],
+                          xAxes: [{
+                                ticks: {
+                                    fontColor: '#FFF'
+                                }
+                            }]
+                        },
                         legend: 
                         { 
                             display: false 
@@ -141,7 +368,8 @@
                         title: 
                         {
                             display: true,
-                            text: 'Radiation'
+                            text: 'Radiation( µSv/h )',
+                            fontColor: '#FFF'
                         }
                     }
                 });                
@@ -149,24 +377,49 @@
                 var lightChart = new Chart(lightCtx, 
                 {
                     // The type of chart we want to create
-                    type: 'bar',
+                    type: 'line',
 
                     // The data for our dataset
                     data: 
                     {
-                        labels: [t],
+                        labels: minArray,
                         datasets: 
                         [{
-                            label: 'Light',
-                            backgroundColor: '#3CAEA3',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
+                            backgroundColor: '#FEE29E',
+                            borderColor: '#FEE29E',
+                            data: dataArray,
+                            type: 'line',
+                            pointRadius: 0,
+                            fill: true,
+                            lineTension: 0,
+                            borderWidth: 2,
+                            backgroundColor: lightDataColor,
+                            borderColor: lightDataColor,
+                            pointBorderColor: lightDataColor,
+                            pointBackgroundColor: lightDataColor,
+                            pointHoverBackgroundColor: lightDataColor,
+                            pointHoverBorderColor: lightDataColor
                         }]
                     },
 
                     // Configuration options go here
                     options: 
                     {
+                        animation: false,
+                        scales:
+                        {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: '#FFF'
+                                }
+                            }],
+                          xAxes: [{
+                                ticks: {
+                                    fontColor: '#FFF'
+                                }
+                            }]
+                        },
                         legend: 
                         { 
                             display: false 
@@ -174,13 +427,15 @@
                         title: 
                         {
                             display: true,
-                            text: 'Light'
+                            text: 'Light( lx )',
+                            fontColor: '#FFF'
                         }
                     }
                 });                
                 
-                document.getElementById("temperature").innerHTML = tempChart;
-                document.getElementById("humidity").innerHTML = humChart;
+                document.getElementById("dht-temperature").innerHTML = dhtTempChart;
+                document.getElementById("dht-humidity").innerHTML = dhtHumChart;
+                document.getElementById("dallas-temperature").innerHTML = dallasTempChart;
                 document.getElementById("radiation").innerHTML = radChart;
                 document.getElementById("light").innerHTML = lightChart;
             }
