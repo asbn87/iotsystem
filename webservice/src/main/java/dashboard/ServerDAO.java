@@ -97,7 +97,7 @@ public class ServerDAO implements DAOInterface
             try{
             PreparedStatement stmt = con.prepareStatement("SET SQL_SAFE_UPDATES=0; INSERT INTO light (DeviceId, Lux, TimeId) VALUES ((SELECT Id FROM devices WHERE Mac = ?), ?, (SELECT Id FROM times WHERE time = ?))");
             stmt.setString(1, transporter.getDevice().getMac());
-            stmt.setFloat(2, transporter.getLight().getLux());
+            stmt.setInt(2, transporter.getLight().getLux());
             stmt.setObject(3, transporter.getTime().getTime());
             int u = stmt.executeUpdate();}
             catch (SQLException ex) {Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
