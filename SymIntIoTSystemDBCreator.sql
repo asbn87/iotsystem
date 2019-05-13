@@ -56,3 +56,12 @@ ELSE
 END IF;
 end $$
 delimiter ;
+
+delimiter $$
+create procedure add_time(IN inTime DATETIME)
+begin
+IF NOT EXISTS (SELECT * FROM times WHERE times.Time = inTime) THEN
+    INSERT INTO times(Time) VALUES (inTime);
+END IF;
+end $$
+delimiter ;
