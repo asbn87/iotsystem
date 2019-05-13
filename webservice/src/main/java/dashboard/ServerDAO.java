@@ -31,7 +31,7 @@ public class ServerDAO implements DAOInterface
     
     public ServerDAO()
     {
-        connectToDatabase();        
+                
     }
     
     @Override
@@ -39,9 +39,12 @@ public class ServerDAO implements DAOInterface
     {
         try {
             Properties p = new Properties();
-            p.load(getClass().getResourceAsStream("database.properties"));
+            //p.load(ServerDAO.class.getResourceAsStream("database.properties"));
+            p.load(new FileInputStream("C:\\Users\\emil\\Documents\\iotsystem\\webservice\\src\\main\\java\\dashboard\\database.properties"));
+            
             
             Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("connectionString: " + p.getProperty("connectionString"));
             
             this.con = DriverManager.getConnection(p.getProperty("connectionString"),p.getProperty("name"),p.getProperty("password"));
             } 
