@@ -106,7 +106,7 @@ public class ServerDAO implements DAOInterface
     } 
 
     @Override
-    public List<Transporter> retrieveLatest6HTemperature() 
+    public List<Transporter> retrieveLatest6HData() 
     {
         List<Transporter> transporterList = new ArrayList<>();
         try {            
@@ -121,15 +121,8 @@ public class ServerDAO implements DAOInterface
                 transporterList.add(tr);
             }            
         } catch (SQLException ex) {
-            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return transporterList;
-    }
-
-    @Override
-    public List<Transporter> retrieveLatest6HHumidity() 
-    {
-        List<Transporter> transporterList = new ArrayList<>();
+            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
+        
         try {            
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, humiditys.Humidity_pct FROM times JOIN humiditys ON times.Id = humiditys.TimeId JOIN devices ON devices.Id = humiditys.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
@@ -142,15 +135,8 @@ public class ServerDAO implements DAOInterface
                 transporterList.add(tr);
             }            
         } catch (SQLException ex) {
-            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return transporterList;
-    }
-
-    @Override
-    public List<Transporter> retrieveLatest6HLight() 
-    {
-        List<Transporter> transporterList = new ArrayList<>();
+            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
+        
         try {            
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, light.Lux FROM times JOIN light ON times.Id = light.TimeId JOIN devices ON devices.Id = light.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
@@ -163,15 +149,8 @@ public class ServerDAO implements DAOInterface
                 transporterList.add(tr);
             }            
         } catch (SQLException ex) {
-            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return transporterList;
-    }
-
-    @Override
-    public List<Transporter> retrieveLatest6HRadiation() 
-    {
-        List<Transporter> transporterList = new ArrayList<>();
+            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
+        
         try {            
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, radiation.Siverts_uSv FROM times JOIN radiation ON times.Id = radiation.TimeId JOIN devices ON devices.Id = tradiation.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
@@ -186,6 +165,5 @@ public class ServerDAO implements DAOInterface
         } catch (SQLException ex) {
             Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);}
         return transporterList;
-    }
-    
+    }    
 }
