@@ -35,24 +35,41 @@ public class Trigger extends WebSocketClient
     {
         e.printStackTrace();
     }
-        
-    public static void main(String[] args) throws URISyntaxException, InterruptedException
+    
+    private static void triggerDatabaseSave(String websocketHost) throws URISyntaxException, InterruptedException
     {
-        Trigger trigger = new Trigger(
-                new URI("ws://localhost:8080/webservice/websocket/realtime/log"));
+       Trigger trigger = new Trigger(
+                new URI("ws://" + websocketHost + "/webservice/websocket/realtime/log"));
         trigger.connect();
         System.out.println("Database save request sent.");
         Thread.sleep(3000);
         trigger.close();
-        
-        trigger = new Trigger(new URI("ws://localhost:8080/webservice/websocket/history"));
+    }
+    
+    private static void triggerHistoryPush(String websocketHost) throws URISyntaxException, InterruptedException
+    {
+        Trigger trigger = new Trigger(new URI("ws://" + websocketHost
+                                            + "/webservice/websocket/history"));
         trigger.connect();
         Thread.sleep(100);
         trigger.send("{}");
         System.out.println("Requested push history to dashboard.");
         Thread.sleep(1000);
         trigger.close();
+    }
         
+    public static void main(String[] args) throws URISyntaxException, InterruptedException
+    {
+        if (args.length != 1)
+        {
+            System.out.println("Please provide hostname of websocket server.");
+            System.exit(-1);
+        }
+        
+        String websocketHost = args[0];
+        
+        triggerDatabaseSave(websocketHost);
+        triggerHistoryPush(websocketHost);
         System.exit(0);
     }
 }
