@@ -63,12 +63,12 @@ function updateHistory()
                     gridLines: {
                       display: false,
                       color: '#FFF',
-                      min: -20,
-                      max: 40
                     },
                     ticks: {
                         beginAtZero: true,
-                        fontColor: '#FFF'
+                        fontColor: '#FFF',
+                        min: -20,
+                        max: 40
                     }
                 }],
               xAxes: [{
