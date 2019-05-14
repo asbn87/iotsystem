@@ -347,17 +347,17 @@ function connectRealtime()
             var dif = Math.abs((new Date().getTime() - prevDHT)/1000);
             prevDHT = new Date().getTime();
             document.getElementById("dht-temperature-value").innerHTML = receivedObject.temperature;
-            document.getElementById("dht-temperature-time").innerHTML = dif;
+            document.getElementById("dht-temperature-time").innerHTML = (Math.round(dif * 10) / 10).toFixed(1);
             document.getElementById("dht-humidity-value").innerHTML = receivedObject.humidity;
-            document.getElementById("dht-humidity-time").innerHTML = dif;
+            document.getElementById("dht-humidity-time").innerHTML = (Math.round(dif * 10) / 10).toFixed(1);
         }
         
         else if(receivedObject.mac === "A0:20:A6:05:EA:87")
         {
             var dif = Math.abs((new Date().getTime() - prevDallas)/1000);
             prevDallas = new Date().getTime();
-            document.getElementById("dallas-temperature-value").innerHTML = receivedObject.temperature;
-            document.getElementById("dallas-time").innerHTML = dif;
+            document.getElementById("dallas-temperature-value").innerHTML = (Math.round(receivedObject.temperature * 10) / 10).toFixed(1);
+            document.getElementById("dallas-time").innerHTML = (Math.round(dif * 10) / 10).toFixed(1);
         }
         
         else if(receivedObject.mac === "60:01:94:4C:0E:99")
@@ -365,15 +365,15 @@ function connectRealtime()
             var dif = Math.abs((new Date().getTime() - prevLight)/1000);
             prevLight = new Date().getTime();
             document.getElementById("light-value").innerHTML = receivedObject.light;
-            document.getElementById("light-time").innerHTML = dif;
+            document.getElementById("light-time").innerHTML = (Math.round(dif * 10) / 10).toFixed(1);
         }
         
         else if(receivedObject.mac === "A0:20:A6:05:EA:E2")
         {
             var dif = Math.abs((new Date().getTime() - prevRadiation)/1000);
             prevRadiation = new Date().getTime();
-            document.getElementById("radiation-value").innerHTML = receivedObject.radiation;
-            document.getElementById("radiation-time").innerHTML = dif;
+            document.getElementById("radiation-value").innerHTML = (Math.round(receivedObject.radiation * 100) / 100).toFixed(2);
+            document.getElementById("radiation-time").innerHTML = (Math.round(dif * 10) / 10).toFixed(1);
         }
     };
 }
