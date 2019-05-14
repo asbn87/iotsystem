@@ -40,8 +40,8 @@ function updateHistory()
             [{
                 data: dhtTemperatureArray,
                 type: 'line',
-                pointRadius: 0,
-                fill: true,
+                pointRadius: 1,
+                fill: false,
                 lineTension: 0,
                 borderWidth: 2,
                 backgroundColor: dhtTempDataColor,
@@ -67,7 +67,7 @@ function updateHistory()
                     ticks: {
                         beginAtZero: true,
                         fontColor: '#FFF',
-                        min: -20,
+                        min: 0,
                         max: 40
                     }
                 }],
