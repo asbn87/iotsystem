@@ -334,32 +334,44 @@ function connectRealtime()
 {    
     wsRealtime = new WebSocket(pathRealtime);
     
+    var prevDHT = new Date().getTime();
+    var prevDallas = new Date().getTime();
+    var prevLight = new Date().getTime();
+    var prevRadiation = new Date().getTime();
     wsRealtime.onmessage = function(event)
     {
         var receivedObject = JSON.parse(event.data);
-        var dif = Math.abs((new Date().getTime() - new Date(receivedObject.dateTime).getTime())/1000);
-                
+
         if(receivedObject.mac === "5C:CF:7F:F0:B5:10")
         {
+            var dif = Math.abs((new Date().getTime() - prevDHT)/1000);
+            prevDHT = new Date().getTime();
             document.getElementById("dht-temperature-value").innerHTML = receivedObject.temperature;
+            document.getElementById("dht-temperature-time").innerHTML = dif;
             document.getElementById("dht-humidity-value").innerHTML = receivedObject.humidity;
-            document.getElementById("dht-time").innerHTML = dif;
+            document.getElementById("dht-humidity-time").innerHTML = dif;
         }
         
         else if(receivedObject.mac === "A0:20:A6:05:EA:87")
         {
+            var dif = Math.abs((new Date().getTime() - prevDallas)/1000);
+            prevDallas = new Date().getTime();
             document.getElementById("dallas-temperature-value").innerHTML = receivedObject.temperature;
             document.getElementById("dallas-time").innerHTML = dif;
         }
         
         else if(receivedObject.mac === "60:01:94:4C:0E:99")
         {
+            var dif = Math.abs((new Date().getTime() - prevLight)/1000);
+            prevLight = new Date().getTime();
             document.getElementById("light-value").innerHTML = receivedObject.light;
             document.getElementById("light-time").innerHTML = dif;
         }
         
         else if(receivedObject.mac === "A0:20:A6:05:EA:E2")
         {
+            var dif = Math.abs((new Date().getTime() - prevRadiation)/1000);
+            prevRadiation = new Date().getTime();
             document.getElementById("radiation-value").innerHTML = receivedObject.radiation;
             document.getElementById("radiation-time").innerHTML = dif;
         }
