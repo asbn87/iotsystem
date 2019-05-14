@@ -360,6 +360,7 @@ function connectHistory()
     console.log("Connecting to history websocket...");
     wsHistory = new WebSocket(pathHistory);
     console.log("Connected to history websocket.");
+    
 
     wsHistory.onmessage = function(event)
     {
@@ -403,5 +404,7 @@ function connectHistory()
                 radiationTimeArray.push(item.time.time);
             }
         }
+
+        updateHistory();
     };
 }
