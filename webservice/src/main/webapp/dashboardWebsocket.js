@@ -62,7 +62,9 @@ function updateHistory()
                 yAxes: [{
                     gridLines: {
                       display: false,
-                      color: '#FFF'
+                      color: '#FFF',
+                      min: -20,
+                      max: 40
                     },
                     ticks: {
                         beginAtZero: true,
@@ -123,7 +125,9 @@ function updateHistory()
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        fontColor: '#FFF'
+                        fontColor: '#FFF',
+                        min: 0,
+                        max: 100
                     }
                 }],
               xAxes: [{
@@ -181,7 +185,9 @@ function updateHistory()
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        fontColor: '#FFF'
+                        fontColor: '#FFF',
+                        min: 0,
+                        max: 30
                     }
                 }],
               xAxes: [{
@@ -211,10 +217,10 @@ function updateHistory()
         // The data for our dataset
         data: 
         {
-            labels: lightTimeArray,
+            labels: radiationTimeArray,
             datasets: 
             [{
-                data: lightArray,
+                data: radiationArray,
                 type: 'line',
                 pointRadius: 0,
                 fill: true,
@@ -238,7 +244,9 @@ function updateHistory()
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        fontColor: '#FFF'
+                        fontColor: '#FFF',
+                        min: 0,
+                        max: 1
                     }
                 }],
               xAxes: [{
@@ -268,10 +276,10 @@ function updateHistory()
         // The data for our dataset
         data: 
         {
-            labels: radiationTimeArray,
+            labels: lightTimeArray,
             datasets: 
             [{
-                data: radiationArray,
+                data: lightArray,
                 type: 'line',
                 pointRadius: 0,
                 fill: true,
@@ -295,7 +303,9 @@ function updateHistory()
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        fontColor: '#FFF'
+                        fontColor: '#FFF',
+                        min: 0,
+                        max: 5000
                     }
                 }],
               xAxes: [{
@@ -379,36 +389,37 @@ function connectHistory()
 
         function updateHistoryData(item)
         {
+            var year = item.time.time.date.year;
+            var month = item.time.time.date.month;
+            var day = item.time.time.date.day;
+            var hour = item.time.time.time.hour;
+            var minute = item.time.time.time.minute;
+            var second = item.time.time.time.second;
+            var time = hour + ":" + minute + ":" + second;
+            
             if(item.device.mac === "5C:CF:7F:F0:B5:10")
             {
                 dhtTemperatureArray.push(item.temperature.temperature_C);
                 dhtHumidityArray.push(item.humidity.humidity_pct);
-                var year = item.time.time.date.year;
-                var month = item.time.time.date.month;
-                var day = item.time.time.date.day;
-                var hour = item.time.time.time.hour;
-                var minute = item.time.time.time.minute;
-                var second = item.time.time.time.second;
-                var date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-                dhtTimeArray.push(date);
+                dhtTimeArray.push(time);
             }
             
             else if(item.device.mac === "A0:20:A6:05:EA:87")
             {
                 dallasTemperatureArray.push(item.temperature.temperature_C);
-                dallasTimeArray.push(item.time.time);
+                dallasTimeArray.push(time);
             }
             
             else if(item.device.mac === "60:01:94:4C:0E:99")
             {
                 lightArray.push(item.light.lux);
-                lightTimeArray.push(item.time.time);
+                lightTimeArray.push(time);
             }
             
             else if(item.device.mac === "A0:20:A6:05:EA:E2")
             {
                 radiationArray.push(item.radiation.siverts_uSv);
-                radiationTimeArray.push(item.time.time);
+                radiationTimeArray.push(time);
             }
         }
 
