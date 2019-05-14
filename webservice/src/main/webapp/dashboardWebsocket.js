@@ -373,8 +373,10 @@ function connectHistory()
         lightTimeArray = [];
         radiationArray = [];
         radiationTimeArray = [];
-        
-        for (var item in receivedObject.transporters)
+
+        receivedObject.transporters.forEach(updateHistoryData);
+
+        function updateHistoryData(item)
         {
             if(item.device.mac === "5C:CF:7F:F0:B5:10")
             {
@@ -401,6 +403,5 @@ function connectHistory()
                 radiationTimeArray.push(item.time.time);
             }
         }
-        console.log(event.data);
     };
 }

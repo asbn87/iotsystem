@@ -9,7 +9,7 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <title>IoT System</title>
     </head>
-    <body onload="connectRealtime(); connectHistory();">
+    <body>
         <div class="main">
             <div class="row" style="height: 30%; margin: 0; padding: 0; border-bottom: 1px solid #FFF">
                 <div class="flex-container">
@@ -106,5 +106,13 @@
                 </div>
             </div>
         </div>
+
+        <script>
+                window.onload = function()
+                {
+                    connectRealtime();
+                    connectHistory();
+                };
+        </script>
     </body>
 </html>
