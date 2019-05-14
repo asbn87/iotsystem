@@ -383,7 +383,14 @@ function connectHistory()
             {
                 dhtTemperatureArray.push(item.temperature.temperature_C);
                 dhtHumidityArray.push(item.humidity.humidity_pct);
-                dhtTimeArray.push(item.time.time);
+                var year = item.time.time.date.year;
+                var month = item.time.time.date.month;
+                var day = item.time.time.date.day;
+                var hour = item.time.time.time.hour;
+                var minute = item.time.time.time.minute;
+                var second = item.time.time.time.second;
+                
+                dhtTimeArray.push(new Date.UTC(year, month, day, hour, minute, second));
             }
             
             else if(item.device.mac === "A0:20:A6:05:EA:87")
