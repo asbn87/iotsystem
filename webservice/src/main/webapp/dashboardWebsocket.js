@@ -395,7 +395,14 @@ function connectHistory()
             var hour = item.time.time.time.hour;
             var minute = item.time.time.time.minute;
             var second = item.time.time.time.second;
-            var time = hour + ":" + minute + ":" + second;
+            if(minute < 10 && minute > -10)
+            {
+                var time = hour + ":0" + minute;
+            }
+            else
+            {
+                var time = hour + ":" + minute;
+            }
             
             if(item.device.mac === "5C:CF:7F:F0:B5:10")
             {
