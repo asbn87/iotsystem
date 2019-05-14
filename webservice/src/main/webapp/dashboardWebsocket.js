@@ -389,8 +389,8 @@ function connectHistory()
                 var hour = item.time.time.time.hour;
                 var minute = item.time.time.time.minute;
                 var second = item.time.time.time.second;
-                
-                dhtTimeArray.push(new Date.UTC(year, month, day, hour, minute, second));
+                var date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+                dhtTimeArray.push(date);
             }
             
             else if(item.device.mac === "A0:20:A6:05:EA:87")
