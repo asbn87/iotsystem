@@ -40,7 +40,7 @@ public class ServerDAO implements DAOInterface
         try {
             Properties p = new Properties();
             //p.load(ServerDAO.class.getResourceAsStream("database.properties"));
-            p.load(new FileInputStream("C:\\Users\\emil\\Documents\\iotsystem\\webservice\\src\\main\\java\\dashboard\\database.properties"));
+            p.load(new FileInputStream("C:\\Users\\emil\\Documents\\iotsystem\\webservice\\src\\database.properties"));
             
             
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -163,7 +163,7 @@ public class ServerDAO implements DAOInterface
         
         try {            
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, radiation.Siverts_uSv FROM times JOIN radiation ON times.Id = radiation.TimeId JOIN devices ON devices.Id = tradiation.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
+            ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, radiation.Siverts_uSv FROM times JOIN radiation ON times.Id = radiation.TimeId JOIN devices ON devices.Id = radiation.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
             while(rs.next())
             {
                 Transporter tr = new Transporter();

@@ -4,186 +4,115 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link href="main.css" type="text/css" rel="stylesheet">
-        <!--<script type="text/javascript" src="websocket.js"></script>-->
+        <script type="text/javascript" src="dashboardWebsocket.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <title>IoT System</title>
     </head>
     <body>
-        <div class="row">
-            <div class="col-12" style="text-align: center; height: 110px">
-                <h1>IoT System Dashboard</h1>
+        <div class="main">
+            <div class="row" style="height: 30%; margin: 0; padding: 0; border-bottom: 1px solid #FFF">
+                <div class="flex-container">
+
+                    <!-- Whitespace -->
+                    <div class="col-1 flex-col" style="background-color: #1C1F1F; padding: 10px 0; text-align: center; color: white;">
+                        <h4 id="realtime-title" style="padding: 10px 0; margin: 0">REALTIME:</h4>
+                    </div>
+
+                    <!-- Dht11 sensor temperature -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="dht-temperature-label"><b>Temperature</b></span>
+                                <br />
+                            <span id="dht-temperature-value"></span>
+                        </div>
+                    </div>
+
+                    <!-- Dht11 sensor humidity -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="dht-humidity-label"><b>Humidity</b></span>
+                                <br />
+                            <span id="dht-humidity-value"></span>
+                        </div>
+                    </div>
+
+                    <!-- Dallas sensor temperature -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="dallas-temperature-label"><b>Water Temperature</b></span>
+                                <br />
+                            <span id="dallas-temperature-value"></span>
+                        </div>
+                    </div>
+
+                    <!-- Radiation sensor -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="radiation-label"><b>Radiation</b></span>
+                                <br />
+                            <span id="radiation-value"></span>
+                        </div>
+                    </div>
+
+                    <!-- Light sensor -->
+                    <div class="col-2 flex-col">
+                        <div style="padding: 10px 0; text-align: center; color: white;">
+                            <span id="light-label"><b>Light</b></span>
+                                <br />
+                            <span id="light-value"></span>
+                        </div>
+                    </div>
+
+                    <!-- Whitespace -->
+                    <div class="col-1 flex-col" style="background-color: #1C1F1F; padding: 10px 0; text-align: center; color: white;">
+                        <span id="update-label" style="padding: 10px 0;"><b>Updated:</b></span>
+                            <br />
+                        <span id="update-value"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row" style="margin: 0; padding: 0;">
+                <div class="flex-container">
+
+                    <div class="col-4 flex-col">
+                        <canvas id="dht-temperature"></canvas>
+                    </div>
+
+                    <div class="col-4 flex-col">
+                        <canvas id="dht-humidity"></canvas>
+                    </div>
+
+                    <div class="col-4 flex-col">
+                        <canvas id="dallas-temperature"></canvas>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row" style="height: 40%; margin: 0; padding: 0;">
+                <div class="flex-container">
+
+                    <div class="col-6 flex-col">
+                        <canvas id="radiation"></canvas>
+                    </div>
+
+                    <div class="col-6 flex-col">
+                        <canvas id="light"></canvas>
+                    </div>
+
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <!-- Dht11 sensor -->
-                <canvas id="temperature" height="200"></canvas>
-            </div>
-            <div class="col-3">
-                <!-- Dallas temperature sensor -->
-                <canvas id="humidity" height="200"></canvas>
-            </div>
-            <div class="col-3">
-                <!-- Radiation sensor -->
-                <canvas id="radiation" height="200"></canvas>
-            </div>
-            <div class="col-3">
-                <!-- Light sensor -->
-                <canvas id="light" height="200"></canvas>
-            </div>
-        </div>
+
         <script>
-            var tempCtx = document.getElementById('temperature').getContext('2d');
-            var humCtx = document.getElementById('humidity').getContext('2d');
-            var radCtx = document.getElementById('radiation').getContext('2d');
-            var lightCtx = document.getElementById('light').getContext('2d');
-            setInterval(update, 1000);
-
-            function update() 
-            {
-                var d = new Date();
-                var t = d.toLocaleTimeString();
-              
-                var tempChart = new Chart(tempCtx, 
+                window.onload = function()
                 {
-                    // The type of chart we want to create
-                    type: 'bar',
-
-                    // The data for our dataset
-                    data: 
-                    {
-                        labels: [t],
-                        datasets: 
-                        [{
-                            label: 'Temperature',
-                            backgroundColor: '#173F5F',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: 
-                    {
-                        //animation: true,
-                        legend: 
-                        { 
-                            display: false 
-                        },
-                        title: 
-                        {
-                            display: true,
-                            text: 'Temperature'
-                        }
-                    }
-                });
-                
-
-                var humChart = new Chart(humCtx, 
-                {
-                    // The type of chart we want to create
-                    type: 'bar',
-
-                    // The data for our dataset
-                    data: 
-                    {
-                        labels: [t],
-                        datasets: 
-                        [{
-                            label: 'Humidity',
-                            backgroundColor: '#F6D55C',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: 
-                    {
-                        legend: 
-                        { 
-                            display: false 
-                        },
-                        title: 
-                        {
-                            display: true,
-                            text: 'Humidity'
-                        }
-                    }
-                });
-                
-                var radChart = new Chart(radCtx, 
-                {
-                    // The type of chart we want to create
-                    type: 'bar',
-
-                    // The data for our dataset
-                    data: 
-                    {
-                        labels: [t],
-                        datasets: 
-                        [{
-                            label: 'Radiation',
-                            backgroundColor: '#ED553B',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: 
-                    {
-                        legend: 
-                        { 
-                            display: false 
-                        },
-                        title: 
-                        {
-                            display: true,
-                            text: 'Radiation'
-                        }
-                    }
-                });                
-                
-                var lightChart = new Chart(lightCtx, 
-                {
-                    // The type of chart we want to create
-                    type: 'bar',
-
-                    // The data for our dataset
-                    data: 
-                    {
-                        labels: [t],
-                        datasets: 
-                        [{
-                            label: 'Light',
-                            backgroundColor: '#3CAEA3',
-                            borderColor: '#FFFFFF',
-                            data: [Math.random()]
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: 
-                    {
-                        legend: 
-                        { 
-                            display: false 
-                        },
-                        title: 
-                        {
-                            display: true,
-                            text: 'Light'
-                        }
-                    }
-                });                
-                
-                document.getElementById("temperature").innerHTML = tempChart;
-                document.getElementById("humidity").innerHTML = humChart;
-                document.getElementById("radiation").innerHTML = radChart;
-                document.getElementById("light").innerHTML = lightChart;
-            }
+                    connectRealtime();
+                    connectHistory();
+                };
         </script>
     </body>
 </html>
