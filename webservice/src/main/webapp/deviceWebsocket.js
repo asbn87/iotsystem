@@ -10,7 +10,7 @@ function connectTempsensor()
 {   
     var host = document.location.host;
     
-    ws = new WebSocket(wsPath + "00:A0:C9:14:C8:29");
+    ws = new WebSocket(wsPath + "5C:CF:7F:F0:B5:10");
 
     ws.onmessage = function(event) {
         console.log(event.data);

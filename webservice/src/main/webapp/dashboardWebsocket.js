@@ -374,7 +374,7 @@ function connectHistory()
         radiationArray = [];
         radiationTimeArray = [];
         
-        for each(var item in receivedObject.transporters)
+        for (var item in receivedObject.transporters)
         {
             if(item.device.mac === "5C:CF:7F:F0:B5:10")
             {
