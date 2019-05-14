@@ -179,10 +179,6 @@ function updateHistory()
             scales:
             {
                 yAxes: [{
-                    gridLines: {
-                      display: true,
-                      color: '#FFF',
-                    },
                     ticks: {
                         beginAtZero: true,
                         fontColor: '#FFF',
@@ -341,28 +337,31 @@ function connectRealtime()
     wsRealtime.onmessage = function(event)
     {
         var receivedObject = JSON.parse(event.data);
-        
         var dif = Math.abs((new Date().getTime() - new Date(receivedObject.dateTime).getTime())/1000);
                 
         if(receivedObject.mac === "5C:CF:7F:F0:B5:10")
         {
             document.getElementById("dht-temperature-value").innerHTML = receivedObject.temperature;
             document.getElementById("dht-humidity-value").innerHTML = receivedObject.humidity;
+            document.getElementById("dht-time").innerHTML = dif;
         }
         
         else if(receivedObject.mac === "A0:20:A6:05:EA:87")
         {
             document.getElementById("dallas-temperature-value").innerHTML = receivedObject.temperature;
+            document.getElementById("dallas-time").innerHTML = dif;
         }
         
         else if(receivedObject.mac === "60:01:94:4C:0E:99")
         {
             document.getElementById("light-value").innerHTML = receivedObject.light;
+            document.getElementById("light-time").innerHTML = dif;
         }
         
         else if(receivedObject.mac === "A0:20:A6:05:EA:E2")
         {
             document.getElementById("radiation-value").innerHTML = receivedObject.radiation;
+            document.getElementById("radiation-time").innerHTML = dif;
         }
     };
 }
