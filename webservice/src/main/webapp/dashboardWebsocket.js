@@ -19,11 +19,11 @@ var lightTimeArray = [];
 var radiationArray = [];
 var radiationTimeArray = [];
 
-var dhtTempDataColor = '#50EFDA';
-var dhtHumDataColor = '#692D8D';
-var dallasTempDataColor = '#D564AB';         
-var radDataColor = '#FDB592';
-var lightDataColor = '#FEE29E';
+var dhtTempDataColor = '#DD4B39';
+var dhtHumDataColor = '#F012BE';
+var dallasTempDataColor = '#00C0EF';
+var radDataColor = '#01FF70';
+var lightDataColor = '#F39C12';
 
 function updateHistory()
 {
@@ -60,10 +60,6 @@ function updateHistory()
             scales:
             {
                 yAxes: [{
-                    gridLines: {
-                      display: false,
-                      color: '#FFF',
-                    },
                     ticks: {
                         beginAtZero: true,
                         fontColor: '#FFF',
@@ -183,6 +179,10 @@ function updateHistory()
             scales:
             {
                 yAxes: [{
+                    gridLines: {
+                      display: true,
+                      color: '#FFF',
+                    },
                     ticks: {
                         beginAtZero: true,
                         fontColor: '#FFF',
@@ -341,8 +341,10 @@ function connectRealtime()
     wsRealtime.onmessage = function(event)
     {
         var receivedObject = JSON.parse(event.data);
-    
-        if(receivedObject.mac === "5C:CF:7F:F0:B5:10") 
+        
+        var dif = Math.abs((new Date().getTime() - new Date(receivedObject.dateTime).getTime())/1000);
+                
+        if(receivedObject.mac === "5C:CF:7F:F0:B5:10")
         {
             document.getElementById("dht-temperature-value").innerHTML = receivedObject.temperature;
             document.getElementById("dht-humidity-value").innerHTML = receivedObject.humidity;
