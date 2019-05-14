@@ -120,7 +120,7 @@ public class ServerDAO implements DAOInterface
         List<Transporter> transporterList = new ArrayList<>();
         try {            
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, temperatures.Temperature_C FROM times JOIN temperatures ON times.Id = temperatures.TimeId JOIN devices ON devices.Id = temperatures.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
+            ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, temperatures.Temperature_C FROM times JOIN temperatures ON times.Id = temperatures.TimeId JOIN devices ON devices.Id = temperatures.DeviceId WHERE devices.Description = \"temperature\" AND times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
             while(rs.next())
             {
                 Transporter tr = new Transporter();
@@ -134,12 +134,13 @@ public class ServerDAO implements DAOInterface
         
         try {            
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, humiditys.Humidity_pct FROM times JOIN humiditys ON times.Id = humiditys.TimeId JOIN devices ON devices.Id = humiditys.DeviceId WHERE times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
+            ResultSet rs = stmt.executeQuery("SELECT times.Time, devices.Mac, devices.Description, temperatures.Temperature_C, humiditys.Humidity_pct FROM times JOIN temperatures ON times.Id = temperatures.TimeId JOIN humiditys ON times.Id = humiditys.TimeId JOIN devices ON devices.Id = humiditys.DeviceId WHERE devices.Description = \"temp/hum\" AND times.Time <= current_timestamp() AND times.Time >= DATE_SUB(NOW(), INTERVAL '360:0' MINUTE_SECOND);");
             while(rs.next())
             {
                 Transporter tr = new Transporter();
                 tr.setDevice(new Device(rs.getString("devices.Mac"), rs.getString("devices.Description")));
                 tr.setTime(new Time(rs.getTimestamp("times.Time").toLocalDateTime()));
+                tr.setTemperature(new Temperature(rs.getFloat("temperatures.Temperature_C")));
                 tr.setHumidity(new Humidity(rs.getFloat("humiditys.Humidity_pct")));
                 transporterList.add(tr);
             }            
