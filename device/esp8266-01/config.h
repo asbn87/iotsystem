@@ -10,12 +10,12 @@ WiFiClient wifiClient;
 unsigned long previousMillis = 0;
 
 // WiFi settings
-const static char* WIFI_SSID = "WIFI_SSID";
-const static char* WIFI_PASS = "WIFI_PASS";
+const static char* WIFI_SSID = "SSID";
+const static char* WIFI_PASS = "PASSWORD";
 
 // Websocket settings
 String connectionString = "/webservice/websocket/realtime/" + DEVICE_ID;
-char* webserverHost = "echo.websocket.org";
+char* webserverHost = "IP_ADDRESS";
 const int webserverPort = 8080;
 char websocketPath[WEBSOCKET_PATH_LENGTH];
 

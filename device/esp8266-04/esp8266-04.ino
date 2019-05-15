@@ -39,6 +39,11 @@ void loop()
 {
   unsigned long currentMillis = millis();
   char json[MESSAGE_MAX_LEN];
+
+  if (WiFi.status() == WL_DISCONNECTED) 
+  {
+    ESP.restart();
+  }
   
   if((currentMillis - previousMillis) >= SEND_INTERVAL)
   {
@@ -50,9 +55,13 @@ void loop()
       createMessage(json);
       websocketClient.sendData(json);
 
-      Serial.println("Message sent: ");
-      Serial.println(json);
+      //Serial.println("Message sent: ");
+      //Serial.println(json);
       ledStatus(LED_STATUS_GREEN);
+    }
+    else
+    {
+      ledStatus(LED_STATUS_RED);
     }
   }
 }

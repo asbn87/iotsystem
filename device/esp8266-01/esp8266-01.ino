@@ -31,6 +31,11 @@ void loop()
 {
   char json[MESSAGE_MAX_LEN];
   unsigned long currentMillis = millis();
+
+  if (WiFi.status() == WL_DISCONNECTED) 
+  {
+    ESP.restart();
+  }
   
   // Send message every second
   if ((currentMillis - previousMillis) >= DEVICE_SEND_INTERVAL) 

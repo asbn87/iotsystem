@@ -37,6 +37,11 @@ void loop()
 {
   unsigned long currentMillis = millis();
   char json[MESSAGE_MAX_LEN];
+  
+  if (WiFi.status() == WL_DISCONNECTED) 
+  {
+    ESP.restart();
+  }
 
   if ((currentMillis - previousMillis) >= LOG_PERIOD)
   {
@@ -50,6 +55,10 @@ void loop()
 
       Serial.println("Message sent: ");
       Serial.println(json);
+    }
+    else
+    {
+      ledStatus(LED_STATUS_RED);
     }
     
     counts = 0;
