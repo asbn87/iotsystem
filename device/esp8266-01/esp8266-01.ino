@@ -50,5 +50,9 @@ void loop()
       Serial.println("Message sent: ");
       Serial.println(json);
     }
+	else
+	{
+      ESP.restart();
+	}
   }
 }

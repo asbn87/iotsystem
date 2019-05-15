@@ -62,6 +62,7 @@ void loop()
     else
     {
       ledStatus(LED_STATUS_RED);
+	  ESP.restart();
     }
   }
 }
