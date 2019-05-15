@@ -1,2 +1,2 @@
 # iotsystem
-![Screenshot](img/dashboard.png "Dashboard")
+![Screenshot](img/dashboard.PNG "Dashboard")
