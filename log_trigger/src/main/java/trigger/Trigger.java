@@ -42,7 +42,7 @@ public class Trigger extends WebSocketClient
                 new URI("ws://" + websocketHost + "/webservice/websocket/realtime/log"));
         trigger.connect();
         System.out.println("Database save request sent.");
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         trigger.close();
     }
     
@@ -60,15 +60,17 @@ public class Trigger extends WebSocketClient
         
     public static void main(String[] args) throws URISyntaxException, InterruptedException
     {
-        if (args.length != 1)
+        if (args.length != 2)
         {
-            System.out.println("Please provide hostname of websocket server.");
+            System.out.println("Please provide hostname of websocket server and delay time.");
             System.exit(-1);
         }
         
         String websocketHost = args[0];
+        int delay = Integer.parseInt(args[1]);
         
         triggerDatabaseSave(websocketHost);
+        Thread.sleep(delay * 1000);
         triggerHistoryPush(websocketHost);
         System.exit(0);
     }

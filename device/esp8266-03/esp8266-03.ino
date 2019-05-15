@@ -37,6 +37,12 @@ void setup()
 void loop()
 {
   char json[MESSAGE_MAX_LEN];
+
+  if (WiFi.status() == WL_DISCONNECTED) 
+  {
+    ESP.restart();
+  }
+  
   if (wifiClient.connected())
   {
     ledStatus(LED_STATUS_OFF);
@@ -47,5 +53,9 @@ void loop()
     Serial.println(json);
 
     ledStatus(LED_STATUS_GREEN);
+  }
+  else
+  {
+    ledStatus(LED_STATUS_RED);
   }
 }

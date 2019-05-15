@@ -57,7 +57,6 @@ public class HistoryEndpoint
     private void pushHistory()
     {
         serverDAO.connectToDatabase();
-        List<Transporter> transporters = serverDAO.retrieveLatest6HData();
         History history = new History(serverDAO.retrieveLatest6HData());
         
         try

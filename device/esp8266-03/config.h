@@ -16,6 +16,6 @@ const char* WIFI_SSID = "SSID";
 const char* WIFI_PASS = "PASSWORD";
 
 String connectionString = "/webservice/websocket/realtime/" + DEVICE_ID;
-char* webserverHost = "echo.websocket.org";
+char* webserverHost = "IP_ADDRESS";
 const int webserverPort = 8080;
 char websocketPath[WEBSOCKET_PATH_LENGTH];

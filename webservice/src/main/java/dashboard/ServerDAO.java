@@ -40,7 +40,7 @@ public class ServerDAO implements DAOInterface
         try {
             Properties p = new Properties();
             //p.load(ServerDAO.class.getResourceAsStream("database.properties"));
-            p.load(new FileInputStream("C:\\Users\\emil\\Documents\\iotsystem\\webservice\\src\\database.properties"));
+            p.load(new FileInputStream("/home/pi/database.properties"));
             
             
             Class.forName("com.mysql.cj.jdbc.Driver");
