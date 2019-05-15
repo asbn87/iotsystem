@@ -67,3 +67,27 @@ body {
         width: 100%;
     }
 }
+
+
+#dht-temperature-label,
+#dht-temperature-value,
+#dht-temperature-unit,
+#dht-temperature-time,
+#dht-humidity-label,
+#dht-humidity-value,
+#dht-humidity-unit,
+#dht-humidity-time,
+#dallas-temperature-label,
+#dallas-temperature-value,
+#dallas-temperature-unit,
+#dallas-time,
+#radiation-label,
+#radiation-value,
+#radiation-unit,
+#radiation-time,
+#light-label,
+#light-value,
+#light-unit,
+#light-time {
+    font-size: 20px;
+}

@@ -183,7 +183,7 @@ function updateHistory()
                         beginAtZero: true,
                         fontColor: '#FFF',
                         min: 0,
-                        max: 30
+                        max: 40
                     }
                 }],
               xAxes: [{
